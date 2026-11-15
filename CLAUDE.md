@@ -27,6 +27,10 @@
 - Font sizes (from her Figma): body text 24px, small text 20px, tags 18px, project name 44px.
 - Style: the v1 look (centred titles with lines, tilted pill badges, burgundy cards, beige and light sections, grain texture) on the Figma grid. Colours: burgundy `#5E0B16`, beige `#EBDCC6`.
 - Logo "Yeva Soroka / web design" stays in English in both languages.
+- **No sideways overflow on phones**: grids use `minmax(0, 1fr)` and step/service titles shrink with `4vw`, because a long Russian word (Предложение, Многостраничный) used to make the page wider than a 334px screen and the phone panned it sideways. Test widths 320, 334, 360, 375, 390 (an iframe of that width works) after changing phone text.
+- **Phone page frame 375×812**: every section is min-height 812px. She tried a "safe area" (335×660, then 335×710 with 20px margins) and went back to the normal margins (16px sides, 68px top, 24px bottom), so there is no separate safe-area rule. "PROJECTS" title is hidden on phones for projects 01 and 03 (order: badge, name, type, mockups, text, tags, button). Re-measure after any change.
+- **Phones (≤760px): every section fits one 375×812 screen** (her choice, Nov 2026). Compact phone block at the end of the section CSS: How I work = 2 columns of small cards with no spotlight dimming; Services = compact rows (star, name, price on one line, text under it); smaller mockups, terms and about photo. Re-measure at 375×812 in EN and RU after any copy change.
+- Phone hero (<860px): the photo is pulled up so the hair overlaps "PORTFOLIO", text and product pills (wrapped in rows) follow tightly, so the whole first screen fits on a phone.
 
 ## Style (the look she loved in v1, kept in v3)
 She said about v1: "I loved it." The look comes from v1 and only the grid, margins and font sizes come from her Figma rules. When adding anything new, copy these patterns instead of inventing new ones.
@@ -51,7 +55,7 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 - **Number badges** ("01", "02", "03"): Unbounded, beige 2px outline pill, tilted −8°.
 
 **Cards and blocks:**
-- **How I work:** solid burgundy cards, big beige Unbounded number, uppercase step title, 20px text. Spotlight on hover (the card under the mouse is bright and slightly bigger, the others dim). On phones it follows the scroll instead.
+- **How I work:** solid burgundy cards, big beige Unbounded number, step title in the same font and size as the service names (Unbounded 800, 32px at 1920, normal case), 20px text. Spotlight on hover (the card under the mouse is bright and slightly bigger, the others dim). On phones it follows the scroll instead.
 - **Services:** cream cards with a soft burgundy shadow and a ✦ star icon; the middle "Multi-page website" card is the burgundy "featured" card. Big Unbounded price at the bottom.
 - **Terms:** dark cards with a 1px beige outline (35% opacity) and a faint dark fill; one big Unbounded heading and text.
 - **About:** the photo with a soft shadow and a burgundy pill tag "hi, I'm Yeva" tilted −4°, overlapping the photo corner. Chips are pills: the first one filled burgundy, the others outlined.
@@ -97,4 +101,4 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 
 ## Open items
 - **Imprint and Privacy** links in the footer (two small pages, EN and RU). Needed because it is a business site for German and Swiss clients. Needs her full name, address and email. No cookie banner is needed (no cookies, no analytics, fonts are self-hosted).
-- **GitHub**: she wants to upload the site. Waiting for her choice: use the existing `Portfolio` repo or a new one, and public or private. Never push without her go-ahead; she signs in herself (no passwords or tokens are entered by Claude).
+- **GitHub**: v3 is linked to `git@github.com:1evasoroka1/Portfolio-website.git` (branch `main`, first commit "Initial" pushed). Never push without her go-ahead; she signs in herself (no passwords or tokens are entered by Claude).
