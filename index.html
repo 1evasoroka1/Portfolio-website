@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yeva Soroka · Web Designer Portfolio</title>
+<meta name="description" content="Yeva Soroka, web designer. Landing pages, multi-page websites, presentations and reels editing for small businesses and experts.">
+<style>
+  /* Fonts are stored in the fonts/ folder (self-hosted, nothing is loaded from Google).
+     Unbounded (headings) and Manrope (text), variable fonts, with Latin (EN, DE) and Cyrillic (RU, UK) letters. */
+  @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(fonts/manrope-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+  @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(fonts/manrope-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+  @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(fonts/manrope-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(fonts/manrope-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Unbounded'; font-style: normal; font-weight: 600 800; font-display: swap; src: url(fonts/unbounded-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+  @font-face { font-family: 'Unbounded'; font-style: normal; font-weight: 600 800; font-display: swap; src: url(fonts/unbounded-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+  @font-face { font-family: 'Unbounded'; font-style: normal; font-weight: 600 800; font-display: swap; src: url(fonts/unbounded-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'Unbounded'; font-style: normal; font-weight: 600 800; font-display: swap; src: url(fonts/unbounded-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+  /* v3 = the v1 look on the Figma grid (Frame 9, Slides 2-4, drawn at 1920×1080):
+     - 50px margin on every side (--m), 30px between blocks (--g)
+     - header row 50px from the top, 38px tall; titles start 30px under it (118px)
+     - every section is one screen; content ends 84px above the bottom
+     - font sizes from Figma, scaled with the screen width (value / 19.2 = vw) */
+  :root {
+    --u: min(1vw, 1.7778svh);   /* 1/100 of the 1920×1080 frame, fitted to the window */
+    --fk: 1;
+    --burgundy: #5E0B16;
+    --burgundy-mid: #7A1220;
+    --burgundy-deep: #3A050C;
+    --ink: #2A0409;
+    --beige: #EBDCC6;
+    --beige-light: #F4EADB;
+    --card: #FFF8EE;
+    --accent: #EBDCC6;
+    --f-display: 'Unbounded', sans-serif;
+    --f-body: 'Manrope', sans-serif;
+    --w-display: 800;
+    --m: clamp(calc(16px * var(--fk)), calc(2.6042 * var(--u)), 50px);          /* page margin */
+    --g: clamp(calc(14px * var(--fk)), calc(1.5625 * var(--u)), 30px);          /* gap between blocks */
+    --pad-top: clamp(calc(78px * var(--fk)), calc(6.15 * var(--u)), 118px);
+    --pad-bottom: clamp(calc(40px * var(--fk)), calc(4.375 * var(--u)), 84px);
+    --h2: clamp(calc(40px * var(--fk)), calc(6.25 * var(--u)), 120px);          /* section titles, 120px in Figma */
+    --t-body: clamp(calc(15px * var(--fk)), calc(1.25 * var(--u)), 24px);       /* body text, 24px in Figma */
+    --t-small: clamp(calc(14px * var(--fk)), calc(1.04 * var(--u)), 20px);
+    --radius: clamp(calc(18px * var(--fk)), calc(1.25 * var(--u)), 24px);
+  }
+  @media (min-width: 1200px) { :root { --fk: .55; } }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--beige); font-family: var(--f-body); line-height: 1.6; overflow-x: hidden; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  button { font: inherit; }
+
+  .display {
+    font-family: var(--f-display); font-weight: var(--w-display);
+    line-height: .95; letter-spacing: -0.02em; text-transform: uppercase;
+  }
+  html[lang=ru] .display { line-height: 1.05; }   /* room for Й and Ё */
+  .serif-i { font-family: var(--f-display); font-weight: 600; letter-spacing: -0.01em; }
+  .grain::after { /* crumpled-paper grain, same as the presentation */
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: .25; mix-blend-mode: overlay;
+  }
+  .light.grain::after { mix-blend-mode: multiply; opacity: .14; }
+
+  section {
+    position: relative; min-height: 100svh;
+    display: flex; flex-direction: column;
+    padding: var(--pad-top) var(--m) var(--pad-bottom);
+  }
+  .wine { background: radial-gradient(120% 80% at 50% 0%, var(--burgundy-mid) 0%, var(--burgundy) 45%, var(--burgundy-deep) 100%); color: var(--beige); }
+  .light { background: var(--beige-light); color: var(--burgundy); }
+  .inner { position: relative; z-index: 1; width: 100%; flex: 1 0 auto; display: flex; flex-direction: column; }
+
+  /* centred title between two thin lines (v1), optional counter badge at the edge */
+  /* equal side columns, so the title is always exactly centred (the counter badge sits on top of one line) */
+  .section-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--g); margin-bottom: var(--g); }
+  .section-head::before, .section-head::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .35; }
+  .section-head h2 { font-size: var(--h2); text-align: center; white-space: nowrap; }
+  .section-head { position: relative; }
+  .section-head .count { position: absolute; right: 0; top: 50%; translate: 0 -50%; }
+  .section-head.flip .count { right: auto; left: 0; }
+  .section-head:has(.count)::after { margin-right: clamp(calc(110px * var(--fk)), calc(7.3 * var(--u)), 140px); }
+  .section-head.flip:has(.count)::after { margin-right: 0; }
+  .section-head.flip:has(.count)::before { margin-left: clamp(calc(110px * var(--fk)), calc(7.3 * var(--u)), 140px); }
+  .count {
+    display: inline-block; font-family: var(--f-display); font-weight: var(--w-display); color: var(--accent);
+    font-size: clamp(calc(14px * var(--fk)), calc(1.04 * var(--u)), 20px); line-height: 1; padding: .5em 1em; border: 2px solid currentColor; border-radius: 99px;
+    transform: rotate(-8deg); white-space: nowrap;
+  }
+  @media (max-width: 760px) {   /* phone: no lines, the title may wrap, counter sits next to it */
+    .section-head { display: flex; justify-content: center; }
+    .section-head:has(.count) { justify-content: space-between; }
+    .section-head::before, .section-head::after { display: none; }
+    .section-head h2 { white-space: normal; }
+    .section-head:has(.count) h2 { text-align: left; }
+    .section-head .count, .section-head.flip .count { position: static; translate: none; order: 2; }
+  }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; opacity: .75; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--f-body); font-weight: 700; font-size: clamp(calc(14px * var(--fk)), calc(1.04 * var(--u)), 20px); text-decoration: none; cursor: pointer;
+    padding: .7em 1.3em; border-radius: 99px; border: 1.5px solid var(--beige); background: none; color: var(--beige);
+    transition: transform .2s, background .2s, color .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.solid { background: var(--beige); color: var(--burgundy); }
+  .btn.ghost:hover { background: color-mix(in srgb, var(--beige) 12%, transparent); }
+  /* beige buttons turn transparent only while the cursor is on the button itself */
+  .btn.solid:hover { background: transparent; color: var(--beige); }
+
+  /* ---------- nav: logo | links (centred) | languages + WhatsApp ---------- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+    padding: var(--m) var(--m) 0; color: var(--beige); transition: background .3s, padding .3s;
+  }
+  .nav.scrolled { background: color-mix(in srgb, var(--ink) 88%, transparent); backdrop-filter: blur(10px); padding-top: 12px; padding-bottom: 12px; }
+  .nav .logo { justify-self: start; font-family: var(--f-display); font-weight: var(--w-display); font-size: 20px; letter-spacing: -.06em; text-decoration: none; white-space: nowrap; display: flex; flex-direction: column; align-items: center; line-height: 1.15; }
+  .nav .logo small { font-family: var(--f-body); font-weight: 600; font-size: 14px; letter-spacing: .25em; text-transform: uppercase; opacity: .85; margin-top: -4px; }
+  .nav ul { display: flex; gap: 26px; list-style: none; font-size: 16px; font-weight: 600; }
+  .nav ul a { text-decoration: none; opacity: .85; }
+  .nav ul a:hover { opacity: 1; }
+  .nav .right { justify-self: end; display: flex; align-items: center; gap: 14px; }
+  .nav .btn { padding: 10px 18px; font-size: 13px; }
+  .langs { display: flex; border: 1px solid color-mix(in srgb, var(--beige) 50%, transparent); border-radius: 99px; overflow: hidden; }
+  .langs button { background: none; border: 0; color: var(--beige); font-size: 12px; font-weight: 700; letter-spacing: .08em; padding: 8px 12px; cursor: pointer; }
+  .langs button.on { background: var(--beige); color: var(--burgundy); }
+  @media (max-width: 960px) { .nav ul { display: none; } .nav { grid-template-columns: 1fr auto; } }
+  @media (max-width: 520px) { .nav .btn { display: none; } }
+
+  /* ---------- 1. hero (Frame 9) ---------- */
+  .hero { min-height: 100svh; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+  .hero .mega { position: relative; z-index: 1; width: max-content; white-space: nowrap; font-size: calc(17 * var(--u)); margin: var(--pad-top) 0 0 var(--m); }
+  /* face close-up: the frame shows the photo down to the end of the hair, then fades out */
+  .hero .photo-wrap {
+    --H: min(160svh, 100vw);   /* height of the full photo, same framing as the presentation cover */
+    position: absolute; left: 50%; top: calc(var(--H) * -0.017); transform: translateX(-50%); z-index: 2;
+    height: calc(var(--H) * .64); aspect-ratio: 941 / 1070; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 75%, rgba(0,0,0,.5) 87.5%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 75%, rgba(0,0,0,.5) 87.5%, transparent 100%);
+  }
+  .hero .photo-wrap img { width: 100%; height: auto; }
+  .hero .corners {
+    position: relative; z-index: 3; flex: 1 0 auto;
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 40px;
+    padding: 0 var(--m) var(--pad-bottom);
+  }
+  .hero .left .name, .hero .left .role, .hero .right .kicker { display: none; }
+  .hero .left .offer { font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); line-height: 1.5; max-width: 450px; margin-bottom: 20px; }
+  .hero .ctas { display: flex; gap: 19px; flex-wrap: wrap; }
+  .hero .right { justify-self: end; text-align: right; }
+  .products { list-style: none; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .products a {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); font-weight: 700; padding: .38em .75em; border-radius: 99px;
+    border: 1px solid color-mix(in srgb, var(--beige) 50%, transparent); background: color-mix(in srgb, var(--ink) 35%, transparent); backdrop-filter: blur(4px); transition: background .2s;
+  }
+  .products a:hover { background: color-mix(in srgb, var(--beige) 15%, transparent); }
+  .products .price { font-weight: 400; opacity: .75; font-size: .625em; white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .hero .mega { margin-top: 84px; }
+    .hero .photo-wrap { position: relative; left: auto; top: auto; transform: none; height: auto; width: calc(92 * var(--u)); margin: -1vw auto 0; }
+    .hero .corners { grid-template-columns: 1fr; gap: 32px; margin-top: -6vw; }
+    .hero .right { justify-self: start; text-align: left; }
+    .products { align-items: flex-start; }
+  }
+
+  /* ---------- 2. projects: one screen each, v1 structure on the 1920×1080 grid ---------- */
+  /* Olha: mockups left, text right.  LightUp (.alt): text left, mockups right. */
+  .project {
+    flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: calc(5 * var(--u)); row-gap: var(--g); align-items: center;
+    text-decoration: none; color: inherit;
+  }
+  .project .mock-area { order: -1; }
+  .project.alt { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+  .project.alt .mock-area { order: 1; }
+  .project .text { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(calc(12px * var(--fk)), calc(1.3 * var(--u)), 24px); min-width: 0; }
+  .project .num { margin-bottom: calc(.2 * var(--u)); }
+  .project h3 { font-size: clamp(calc(26px * var(--fk)), calc(2.3 * var(--u)), 44px); line-height: 1.05; margin-bottom: calc(.5 * var(--u)); }
+  .project .type { font-size: var(--t-body); opacity: .9; margin: calc(-.4 * var(--u)) 0 calc(.5 * var(--u)); }
+  .project dl { display: grid; gap: clamp(calc(12px * var(--fk)), calc(1.1 * var(--u)), 24px); }
+  .project dt { font-family: var(--f-display); font-weight: var(--w-display); font-size: var(--t-body); line-height: 1.25; margin-bottom: calc(.2 * var(--u)); }
+  .project dd { font-weight: 600; font-size: var(--t-body); line-height: 1.4; opacity: .92; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags span { font-size: clamp(calc(13px * var(--fk)), calc(.9375 * var(--u)), 18px); font-weight: 600; padding: .38em 1em; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--beige) 55%, transparent); }
+  /* "Visit website": beige by default, transparent only while the cursor is on the button itself */
+  .project .visit { background: var(--beige); color: var(--burgundy); transition: background .25s, color .25s, transform .2s; }
+  .project .visit:hover { background: transparent; color: var(--beige); }
+
+  /* screen mockups: placed and tilted as in Figma (sizes in % of the mockup width) */
+  .mock-area { display: flex; align-items: center; justify-content: center; min-width: 0; }
+  /* as big as the column and the screen height allow */
+  .stage { position: relative; width: min(100%, calc((100svh - var(--pad-top) - var(--pad-bottom) - 1.1 * var(--h2) - 4 * var(--g)) * 1.28)); margin: 0 auto; aspect-ratio: 650 / 507; container-type: inline-size; transition: transform .4s; }
+  .project:hover .stage { transform: scale(1.02); }
+  .browser { position: absolute; background: var(--beige-light); border-radius: 1.6cqw; overflow: hidden; box-shadow: 0 3cqw 6cqw rgba(0,0,0,.45); }
+  .browser .bar { height: 3.4cqw; background: #e0cfb6; display: flex; align-items: center; gap: .9cqw; padding: 0 1.8cqw; }
+  .browser .bar i { width: 1.2cqw; height: 1.2cqw; border-radius: 50%; background: var(--burgundy); opacity: .5; }
+  .browser img { width: 100%; aspect-ratio: var(--ar, 1440 / 900); object-fit: cover; object-position: top; }
+  .phone { position: absolute; border-radius: 4.4cqw; border: 1cqw solid #1a0306; overflow: hidden; background: #1a0306; box-shadow: 0 3cqw 6cqw rgba(0,0,0,.5); }
+  .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .olha .back  { left: 16cqw; top: -2cqw; width: 82cqw; transform: rotate(3deg); opacity: .92; --ar: 536 / 352; }
+  .olha .front { left: -1cqw; top: 23cqw; width: 83cqw; transform: rotate(-2deg); z-index: 1; }
+  .olha .mob   { left: 73cqw; top: 23.5cqw; width: 28cqw; height: 53cqw; transform: rotate(3deg); z-index: 2; }
+  .lu .back    { left: 4.6cqw; top: 0; width: 78cqw; transform: rotate(-3deg); opacity: .92; --ar: 534 / 319; }
+  .lu .front   { left: 20cqw; top: 22cqw; width: 80cqw; transform: rotate(2deg); z-index: 1; }
+  .lu .mob     { left: .5cqw; top: 24cqw; width: 27.5cqw; height: 46cqw; transform: rotate(-3deg); z-index: 2; }
+  /* hover: the screen under the cursor comes to the front.
+     Only `scale` changes (not the tilt), so the hover area just grows and never flickers at the edges. */
+  .browser, .phone { transition: scale .35s ease, box-shadow .35s ease, opacity .35s ease; }
+  @media (hover: hover) {
+    .stage .browser:hover, .stage .phone:hover { z-index: 5; scale: 1.05; opacity: 1; box-shadow: 0 4cqw 8cqw rgba(0,0,0,.6); }
+  }
+  @media (max-width: 1200px) {
+    .project, .project.alt { grid-template-columns: 1fr; }
+    .project .mock-area, .project.alt .mock-area { order: -1; padding: calc(2 * var(--u)) 0 calc(6 * var(--u)); }
+    .stage { width: 72%; margin: 0 auto; }
+    .project dl { grid-template-columns: repeat(3, 1fr); gap: var(--g); }
+  }
+  @media (max-width: 760px) {
+    .project dl { grid-template-columns: 1fr; }
+    .stage { width: 86%; }
+  }
+
+  /* reels & creatives: phones in a row, text on the right (Slide 3) */
+  /* heading centred above the phones */
+  .reels { flex: 1 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(calc(14px * var(--fk)), calc(1.4 * var(--u)), 26px); text-align: center; }
+  .reels .text { order: -1; }
+  /* Reels: title a bit smaller than PROJECTS so the thin lines fit; same centred grid as the other titles */
+  #creatives .section-head h2 { font-size: clamp(calc(30px * var(--fk)), calc(5.4 * var(--u)), 104px); }
+  .reels .text h3 { font-size: clamp(calc(26px * var(--fk)), calc(2.3 * var(--u)), 44px); line-height: 1.05; margin: 0 0 clamp(calc(6px * var(--fk)), calc(.6 * var(--u)), 12px); }
+  .reels .text p { font-size: var(--t-body); line-height: 1.4; opacity: .85; }
+  .gallery { width: min(100%, calc((100svh - var(--pad-top) - var(--pad-bottom) - 9 * var(--u)) * 2.15)); margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(calc(16px * var(--fk)), calc(1.6 * var(--u)), 30px); padding-bottom: calc(1.5 * var(--u)); }
+  .gallery .item { position: relative; }
+  .gallery .item img, .gallery .item video {
+    width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: clamp(calc(14px * var(--fk)), calc(1.3 * var(--u)), 24px); border: clamp(calc(4px * var(--fk)), calc(.35 * var(--u)), 7px) solid #1a0306;
+    box-shadow: 0 24px 50px rgba(0,0,0,.45); transform: rotate(-2deg); transition: transform .4s;
+  }
+  .gallery .item:nth-child(even) img, .gallery .item:nth-child(even) video { transform: rotate(2deg) translateY(16px); }
+  .gallery .item:hover img, .gallery .item:hover video { transform: rotate(0) scale(1.03); }
+  .gallery figcaption {
+    position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%) rotate(-3deg); white-space: nowrap;
+    background: var(--beige); color: var(--burgundy); padding: .5em 1.3em; border-radius: 99px;
+    font-family: var(--f-display); font-weight: 600; font-size: clamp(calc(12px * var(--fk)), calc(.83 * var(--u)), 16px);
+  }
+  @media (max-width: 1200px) {
+    .gallery { width: 100%; }
+  }
+  @media (max-width: 860px) {
+    .gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 4px 30px; margin: 0 calc(var(--m) * -1); padding-left: var(--m); }
+    .gallery .item { flex: 0 0 calc(62 * var(--u)); scroll-snap-align: center; }
+  }
+
+  /* ---------- 3. how I work: 2 rows of 3 cards (the spotlight animation stays) ---------- */
+  .process { position: relative; flex: 1 0 auto; display: flex; flex-direction: column; }
+  .track, .step .dot { display: none; }
+  .steps { position: relative; flex: 1; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
+  .step { position: relative; display: flex; }
+  .step .card {
+    flex: 1; display: flex; flex-direction: column; gap: calc(1.2 * var(--u));
+    border-radius: var(--radius); padding: clamp(calc(22px * var(--fk)), calc(2.08 * var(--u)), 40px); border: 2px solid var(--burgundy);
+    background: var(--burgundy); color: var(--beige);
+    transition: background .5s, color .5s, transform .5s, opacity .5s, box-shadow .5s;
+  }
+  .step .n { display: block; font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(44px * var(--fk)), calc(3.75 * var(--u)), 72px); line-height: 1; }
+  .step h4 { font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); letter-spacing: .1em; text-transform: uppercase; margin: auto 0 -12px; }
+  .step p { font-size: var(--t-small); line-height: 1.5; opacity: .9; max-width: 560px; min-height: 4.5em; }  /* 3 lines in every card, so the titles line up */
+
+  /* spotlight: while .focus is on, the active step is big and bright and the others wait dimmed.
+     Phones drive it by scrolling, computers by hovering a card. */
+  .steps.focus .step .card { opacity: .3; transform: scale(.96); }
+  .steps.focus .step.active .card { opacity: 1; transform: scale(1.03); box-shadow: 0 22px 44px color-mix(in srgb, var(--burgundy) 30%, transparent); }
+
+  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; } .step .card { min-height: 220px; } }
+  @media (max-width: 640px) { .steps { grid-template-columns: 1fr; } .step .card { min-height: 0; } }
+
+  /* ---------- 4. terms ---------- */
+  .terms { flex: 1 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
+  .term { display: flex; flex-direction: column; gap: 20px; border: 1px solid color-mix(in srgb, var(--beige) 35%, transparent); border-radius: var(--radius); padding: clamp(calc(24px * var(--fk)), calc(2.08 * var(--u)), 40px); background: color-mix(in srgb, var(--ink) 25%, transparent); }
+  .term .big { font-family: var(--f-display); font-weight: var(--w-display); color: var(--accent); font-size: clamp(calc(24px * var(--fk)), calc(3 * var(--u)), 58px); line-height: 1.08; display: block; max-width: 14em; }
+  .term h4 { font-family: var(--f-display); font-weight: 600; font-size: clamp(calc(17px * var(--fk)), calc(1.46 * var(--u)), 28px); margin: auto 0 -10px; }
+  .term p { font-size: var(--t-small); line-height: 1.5; opacity: .9; max-width: 720px; margin-top: auto; }
+  @media (max-width: 760px) { .terms { grid-template-columns: 1fr; } }
+
+  /* ---------- 5. services ---------- */
+  .services { flex: 1 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
+  .services .service { grid-column: span 2; }
+  .services .service:nth-child(n+4) { grid-column: span 3; }
+  .service { display: flex; flex-direction: column; background: var(--card); border-radius: var(--radius); padding: clamp(calc(24px * var(--fk)), calc(1.98 * var(--u)), 38px); box-shadow: 0 14px 34px color-mix(in srgb, var(--burgundy) 8%, transparent); }
+  .service .icon { font-size: clamp(calc(26px * var(--fk)), calc(1.98 * var(--u)), 38px); line-height: 1; margin-bottom: auto; }
+  .service h3 { font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; margin: calc(1 * var(--u)) 0 calc(.6 * var(--u)); }
+  .service p { font-size: var(--t-small); line-height: 1.5; margin-bottom: calc(1.1 * var(--u)); max-width: 560px; }
+  .service .price { font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(24px * var(--fk)), calc(2.08 * var(--u)), 40px); line-height: 1; }
+  .service .note { display: block; margin-top: 8px; font-size: clamp(calc(13px * var(--fk)), calc(.83 * var(--u)), 16px); line-height: 1.45; opacity: .75; }
+  .service.featured { background: var(--burgundy); color: var(--beige); }
+  @media (max-width: 1060px) { .services { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; } .services .service, .services .service:nth-child(n+4) { grid-column: span 1; } .services .service:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
+
+  /* ---------- 6. about ---------- */
+  .about { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, calc(28 * var(--u))) minmax(0, calc(40 * var(--u))); justify-content: center; gap: clamp(calc(36px * var(--fk)), calc(6.25 * var(--u)), 120px); align-items: center; }
+  .about .pic { position: relative; aspect-ratio: 3 / 4; max-height: calc(100svh - var(--pad-top) - var(--pad-bottom) - var(--h2) - 60px); justify-self: end; height: auto; width: 100%; border-radius: 4px; background: url(img/yeva-about.png) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 24px 50px color-mix(in srgb, var(--burgundy-deep) 25%, transparent); }
+  .about .pic .tag { position: absolute; right: -14px; bottom: 24px; transform: rotate(-4deg); background: var(--burgundy); color: var(--beige); padding: .55em 1.3em; border-radius: 99px; font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); white-space: nowrap; }
+  .about p { font-size: clamp(calc(17px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.45; margin-bottom: clamp(calc(26px * var(--fk)), calc(2.6 * var(--u)), 50px); }
+  /* left edge straight, right edge uneven like steps (line breaks are set in the texts below) */
+  .about p .ln { display: block; white-space: nowrap; }
+  .about p .para { display: block; }
+  .about p .para + .para { margin-top: .8em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chips span { font-size: var(--t-small); padding: .45em 1.1em; border-radius: 99px; border: 1px solid currentColor; }
+  .chips span:first-child { background: var(--burgundy); color: var(--beige); border-color: var(--burgundy); }
+  @media (max-width: 760px) {
+    .about p .ln { display: inline; white-space: normal; }
+    .about { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .about .pic { width: 100%; max-width: 280px; margin: 0 auto; justify-self: center; }
+  }
+
+  /* ---------- 7. contact ---------- */
+  #contact { padding-bottom: var(--pad-bottom); }
+  /* left: text, buttons with their QR codes under them (one straight left edge); right: big photo */
+  .contact { flex: 1 0 auto; display: grid; grid-template-columns: auto auto; justify-content: center; column-gap: clamp(calc(24px * var(--fk)), calc(7 * var(--u)), 135px); row-gap: var(--g); align-items: center; }
+  .contact > div:first-child { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(calc(24px * var(--fk)), calc(2.3 * var(--u)), 44px); }
+  #contact .section-head h2 { white-space: normal; }
+  html[lang=ru] #contact .section-head h2 { font-size: clamp(calc(34px * var(--fk)), calc(5.4 * var(--u)), 104px); }
+  .contact .pitch { font-size: clamp(calc(18px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.45; }
+  .links { display: flex; gap: var(--g); }
+  .link { display: flex; flex-direction: column; gap: clamp(calc(10px * var(--fk)), calc(.9 * var(--u)), 18px); width: clamp(calc(130px * var(--fk)), calc(10.4 * var(--u)), 200px); }
+  .link .btn { width: 100%; justify-content: center; }
+  .qr { display: block; }
+  .qr img { width: 100%; height: auto; aspect-ratio: 1; padding: 12px; border-radius: 14px; background: #EBDCC6; image-rendering: pixelated; }
+  .contact .circle { position: relative; width: min(calc(30 * var(--u)), calc(100svh - var(--pad-top) - var(--pad-bottom) - 2.3 * var(--h2) - 2 * var(--g)), 600px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid var(--beige); background: radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 30px 70px rgba(0,0,0,.45); }
+  .contact .circle img { position: absolute; left: 50%; top: -10%; height: 150%; max-width: none; transform: translateX(-50%); }
+  @media (max-width: 860px) {
+    .contact { grid-template-columns: 1fr; gap: 24px; align-content: start; justify-content: stretch; }
+    .contact > div:first-child { display: contents; }
+    .contact .circle { order: 1; justify-self: center; width: min(240px, calc(60 * var(--u))); }
+    .contact .pitch { order: 2; text-align: center; }
+    .contact .links { order: 3; justify-content: center; }
+  }
+
+  footer { background: var(--ink); color: color-mix(in srgb, var(--beige) 60%, transparent); text-align: center; font-size: 14px; padding: var(--m); }
+
+  /* ---------- hero + first project: the project slides up over the hero while scrolling ----------
+     .stack is 200 screens tall, .pin stays stuck to the top, the project moves up (translateY 100% to 0)
+     over the first screen of scrolling, so it starts moving with the very first scroll. Only on big screens and without "reduce motion". */
+  @media (min-width: 1201px) and (prefers-reduced-motion: no-preference) {
+    .stack { position: relative; height: 200svh; }
+    .stack .pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+    .stack .hero { position: absolute; inset: 0; height: 100%; z-index: 1; }   /* own layer, so all hero content stays below the sliding page */
+    #projects {
+      position: absolute; inset: 0; height: 100%; min-height: 0; overflow: hidden; z-index: 2;
+      border-radius: clamp(24px, calc(2.5 * var(--u)), 48px) clamp(24px, calc(2.5 * var(--u)), 48px) 0 0;
+      box-shadow: 0 -24px 70px rgba(0,0,0,.4);
+      transform: translate3d(0, calc(var(--s, 1) * 100%), 0); will-change: transform;
+    }
+  }
+
+  /* star cursor: always beige, with a hairline dark edge so it stays visible on light sections */
+  .cursor-star { position: fixed; left: 0; top: 0; width: 28px; height: 28px; margin: -14px 0 0 -14px; pointer-events: none; z-index: 9999; opacity: 0; color: var(--beige); transition: opacity .2s; will-change: transform; filter: drop-shadow(0 0 1px rgba(58, 5, 12, .75)); }
+  .cursor-star svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+  .cursor-star.on { opacity: 1; }
+  html.has-star, html.has-star * { cursor: none !important; }
+
+  /* gentle reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .step .card { opacity: 1 !important; transform: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a class="logo" href="#top"><span>Yeva Soroka</span><small>web design</small></a>
+  <ul>
+    <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+    <li><a href="#process" data-i18n="nav.process">How I work</a></li>
+    <li><a href="#services" data-i18n="nav.services">Services</a></li>
+    <li><a href="#terms" data-i18n="nav.terms">Terms</a></li>
+    <li><a href="#about" data-i18n="nav.about">About</a></li>
+  </ul>
+  <div class="right">
+    <div class="langs" id="langs"></div>
+    <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener" data-i18n="nav.cta">Write on WhatsApp</a>
+  </div>
+</nav>
+
+<!-- 1. HERO -->
+<div class="stack" id="stack"><div class="pin">
+<header class="hero wine grain" id="top">
+  <h1 class="display mega" id="mega" data-i18n="hero.title">Portfolio</h1>
+  <div class="photo-wrap"><img src="img/yeva-cover.png" alt="Yeva Soroka"></div>
+  <div class="corners">
+    <div class="left">
+      <div class="name serif-i" data-i18n="logo">Yeva Soroka</div>
+      <div class="kicker role" data-i18n="hero.role">Web designer</div>
+      <p class="offer" data-i18n="hero.offer">I design websites, presentations and reels that help businesses and experts show what they do, build trust and turn visitors into clients</p>
+      <div class="ctas">
+        <a class="btn solid" href="#projects" data-i18n="hero.see">See projects</a>
+        <a class="btn ghost" href="#contact" data-i18n="hero.contact">Contact me</a>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kicker" data-i18n="hero.make">What I make</div>
+      <ul class="products">
+        <li><a href="#services"><span data-i18n="prod.landing">Landing pages</span> <span class="price" data-i18n="price.300">from $300</span></a></li>
+        <li><a href="#services"><span data-i18n="prod.multi">Multi-page websites</span> <span class="price" data-i18n="price.500">from $500</span></a></li>
+        <li><a href="#services"><span data-i18n="prod.reels">Reels editing</span> <span class="price" data-i18n="price.20">from $15</span></a></li>
+        <li><a href="#services"><span data-i18n="prod.pres">Presentations</span></a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<!-- 2. PROJECTS: three screens, as in Figma Slides 2, 3, 4 -->
+
+<section class="wine grain" id="projects">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="nav.projects">Projects</h2></div>
+    <a class="project alt reveal" href="https://www.thelightup.ch" target="_blank" rel="noopener">
+      <div class="text">
+        <span class="count num">01</span>
+        <h3 class="display">The LightUp Agency</h3>
+          <div class="type serif-i" data-i18n="p2.type">Landing page</div>
+          <dl>
+            <div><dt data-i18n="lbl.client">Client</dt><dd data-i18n="p2.client">A video and content agency in Zurich</dd></div>
+            <div><dt data-i18n="lbl.idea">The idea</dt><dd data-i18n="p2.idea">A dark, cinematic site where the videos do the talking, and every section leads to "Book a project"</dd></div>
+            <div><dt data-i18n="lbl.did">What I did</dt><dd data-i18n="p2.did">Video in hero, services, video gallery, process, client reviews and a booking form, in English &amp; German</dd></div>
+          </dl>
+          <div class="tags"><span>UI/UX</span><span data-i18n="tag.web">Web design</span><span data-i18n="tag.dev">Development</span></div>
+          <span class="btn ghost visit" data-i18n="visit">Visit website</span>
+      </div>
+      <div class="mock-area">
+        <div class="stage lu">
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-videos.jpg" alt="LightUp video gallery" loading="lazy"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-desktop.jpg" alt="LightUp home page" loading="lazy"></div>
+          <div class="phone mob"><img src="img/lu-mobile.jpg" alt="LightUp on mobile" loading="lazy"></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+</div></div>
+
+<!-- Reels & creatives: add an item per example.
+     Image:  <figure class="item"><img src="img/NAME.jpg" alt=""><figcaption>…</figcaption></figure>
+     Reel:   <figure class="item"><video src="img/NAME.mp4" poster="img/NAME.jpg" muted loop playsinline autoplay></video><figcaption>…</figcaption></figure> -->
+<section class="wine grain" id="creatives">
+  <div class="inner">
+    <div class="section-head flip reveal"><h2 class="display" data-i18n="gal.h">Reels &amp; creatives</h2><span class="count">02</span></div>
+    <div class="reels">
+      <div class="gallery reveal">
+        <figure class="item"><img src="img/cr-1.jpg" alt="High heels class story, orange" loading="lazy"><figcaption data-i18n="gal.c1">class promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-3.jpg" alt="Open for collabs story" loading="lazy"><figcaption data-i18n="gal.c2">collab story</figcaption></figure>
+        <figure class="item"><img src="img/cr-5.jpg" alt="Open for collabs, LightUp" loading="lazy"><figcaption data-i18n="gal.c3">agency promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-4.jpg" alt="High heels class story, gray" loading="lazy"><figcaption data-i18n="gal.c4">ad creative</figcaption></figure>
+      </div>
+      <div class="text reveal">
+        <p data-i18n="gal.p">Real examples of stories, ads and reels I made for Instagram</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PROJECT 3: multi-page website -->
+<section class="wine grain" id="project-3">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="nav.projects">Projects</h2></div>
+    <a class="project reveal" href="https://olhasbeauty.vercel.app" target="_blank" rel="noopener">
+      <div class="text">
+        <span class="count num">03</span>
+        <h3 class="display">Olha's Beauty</h3>
+          <div class="type serif-i" data-i18n="p1.type">Multi-page website</div>
+          <dl>
+            <div><dt data-i18n="lbl.client">Client</dt><dd data-i18n="p1.client">A home beauty studio in Germany</dd></div>
+            <div><dt data-i18n="lbl.idea">The idea</dt><dd data-i18n="p1.idea">A soft, feminine site where clients see every service and price. Book in one tap on WhatsApp</dd></div>
+            <div><dt data-i18n="lbl.did">What I did</dt><dd data-i18n="p1.did">Multi-page site in German &amp; Russian, a page for every service, AI content generation for the site, mobile-first</dd></div>
+          </dl>
+          <div class="tags"><span>UI/UX</span><span data-i18n="tag.web">Web design</span><span data-i18n="tag.dev">Development</span><span data-i18n="tag.ai">AI content generation</span></div>
+          <span class="btn ghost visit" data-i18n="visit">Visit website</span>
+      </div>
+      <div class="mock-area">
+        <div class="stage olha">
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop2.jpg" alt="Olha's Beauty massages page" loading="lazy"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop.jpg" alt="Olha's Beauty home page" loading="lazy"></div>
+          <div class="phone mob"><img src="img/olha-mobile.jpg" alt="Olha's Beauty on mobile" loading="lazy"></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 3. HOW I WORK -->
+<section class="light grain" id="process">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="nav.process">How I work</h2></div>
+    <div class="process">
+      <div class="track"><div class="fill"></div></div>
+      <ol class="steps">
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">01</span><h4 data-i18n="st1.h">Contact</h4><p data-i18n="st1.p">You send me your idea. We have a call and go through the details, the main goal and your clients</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">02</span><h4 data-i18n="st2.h">Offer</h4><p data-i18n="st2.p">I send you the price, the deadline and what's included, so everything is clear before we start</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">03</span><h4 data-i18n="st3.h">Structure</h4><p data-i18n="st3.p">We agree on the structure: which pages and sections your website needs and in what order, and I write the texts if needed</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">04</span><h4 data-i18n="st4.h">Moodboard</h4><p data-i18n="st4.p">I show you the style and colors, plus a draft of the site and its first pages, and we approve it together</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">05</span><h4 data-i18n="st5.h">Website</h4><p data-i18n="st5.p">I build the website in the approved style, and it's ready to launch</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">06</span><h4 data-i18n="st6.h">Revisions</h4><p data-i18n="st6.p">If you have edits, we make them: up to three big rounds of revisions are included, then we finish the project</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 5. SERVICES -->
+<section class="light grain" id="services">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="nav.services">Services</h2></div>
+    <div class="services">
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s1.h">Landing page</h3><p data-i18n="s1.p">One page that presents your offer and leads visitors to contact or book</p><div class="price" data-i18n="price.300">from $300</div></div>
+      <div class="service featured reveal"><span class="icon">✦</span><h3 data-i18n="s2.h">Multi-page website</h3><p data-i18n="s2.p">A full website with a page for every service, in one or more languages</p><div class="price" data-i18n="price.500">from $500</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s4.h">Reels editing</h3><p><span data-i18n="s4.p">Editing of your videos for Instagram: cuts, captions, music and graphics</span><span class="note" data-i18n="s4.note">Complex reels with graphics from $30 per reel</span></p><div class="price" data-i18n="price.20">from $15</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s5.h">Ad creatives</h3><p data-i18n="s5.p">Ads and stories for Instagram that catch the eye and bring in clients</p><div class="price" data-i18n="s3.price">on request</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s3.h">Presentation</h3><p data-i18n="s3.p">A presentation of your business, product or expertise in your brand style</p><div class="price" data-i18n="s3.price">on request</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. TERMS -->
+<section class="wine grain" id="terms">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="nav.terms">Terms</h2></div>
+    <div class="terms">
+      <div class="term reveal"><span class="big" data-i18n="t1.big">Everything agreed</span><p data-i18n="t1.p">We approve the style together first. Only then do I design all the pages and images in that style</p></div>
+      <div class="term reveal"><span class="big" data-i18n="t2.big">2–3 rounds of revisions</span><p data-i18n="t2.p">All stages are approved together, and after approval you get up to three big rounds of revisions</p></div>
+      <div class="term reveal"><span class="big" data-i18n="t3.big">100% prepayment</span><p data-i18n="t3.p">For a long project, or if paying at once is hard, we can split the payment into two or three parts</p></div>
+      <div class="term reveal"><span class="big" data-i18n="t4.big">Changes after the project</span><p data-i18n="t4.p">Any changes after the project is finished are paid separately, depending on the task</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ABOUT -->
+<section class="light grain" id="about">
+  <div class="inner">
+    <div class="section-head reveal"><h2 class="display" data-i18n="about.h">About me</h2></div>
+    <div class="about">
+      <div class="pic reveal"><span class="tag serif-i" data-i18n="about.tag">hi, I'm Yeva 👩‍💻</span></div>
+      <div class="reveal">
+        <p data-i18n="about.p"><span class="para"><span class="ln">I'm a creative person</span> <span class="ln">who loves beauty and aesthetics,</span> <span class="ln">which is why I chose web design</span></span><span class="para"><span class="ln">I listen to what you need and</span> <span class="ln">turn it into creative solutions,</span> <span class="ln">so your brand doesn't just</span> <span class="ln">look good, it sells too 🎨</span></span></p>
+        <div class="chips"><span data-i18n="chip1">creative</span><span data-i18n="chip2">beauty</span><span data-i18n="chip3">aesthetics</span><span data-i18n="chip4">attention to detail</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. CONTACT -->
+<section class="wine grain" id="contact">
+  <div class="inner">
+  <div class="section-head reveal"><h2 class="display" data-i18n="contact.h">Let's work<br>together</h2></div>
+  <div class="contact">
+    <div class="reveal">
+      <p class="pitch" data-i18n="contact.p">Want a beautiful website that works for your business?<br>Write to me, and I'll create a design that's made just for you</p>
+      <!-- each QR code sits under its own button -->
+      <div class="links">
+        <div class="link">
+          <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="qr" href="https://wa.me/41763099553" target="_blank" rel="noopener"><img src="img/qr-whatsapp.png" alt="WhatsApp QR code"></a>
+        </div>
+        <div class="link">
+          <a class="btn ghost" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener">Instagram</a>
+          <a class="qr" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener"><img src="img/qr-instagram.png" alt="Instagram QR code"></a>
+        </div>
+      </div>
+    </div>
+    <div class="circle reveal"><img src="img/yeva-cover.png" alt="Yeva Soroka"></div>
+  </div>
+  </div>
+</section>
+
+<footer data-i18n="footer">© 2026 Yeva Soroka · Web designer</footer>
+
+
+<div class="cursor-star" id="star" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0C12.9 7.2 16.8 11.1 24 12C16.8 12.9 12.9 16.8 12 24C11.1 16.8 7.2 12.9 0 12C7.2 11.1 11.1 7.2 12 0Z"/></svg></div>
+
+<script>
+/* ================= translations =================
+   To add a language (e.g. de, uk): add it to LANGS and add a block below with the same keys.
+   Any key missing in a language falls back to English. */
+const LANGS = ['en', 'ru'];
+const T = {
+  en: {
+    title: 'Yeva Soroka · Web Designer Portfolio',
+    logo: 'Yeva Soroka', 'logo.sub': 'web design',
+    'nav.projects': 'Projects', 'nav.process': 'How I work', 'nav.terms': 'Terms', 'nav.services': 'Services', 'nav.about': 'About',
+    'nav.cta': 'Write on WhatsApp',
+    'hero.title': 'Portfolio', 'hero.role': 'Web designer',
+    'hero.offer': "I design websites, presentations and reels that help businesses and experts show what they do, build trust and turn visitors into clients",
+    'hero.see': 'See projects', 'hero.contact': 'Contact me', 'hero.make': 'What I make',
+    'prod.landing': 'Landing pages', 'prod.multi': 'Multi-page websites', 'prod.pres': 'Presentations', 'prod.reels': 'Reels editing',
+    'price.300': 'from $300', 'price.500': 'from $500', 'price.20': "from $15",
+    'lbl.client': 'Client', 'lbl.idea': 'The idea', 'lbl.did': 'What I did',
+    'tag.web': 'Web design', 'tag.dev': 'Development', 'tag.ai': "AI content generation", visit: 'Visit website',
+    'p1.type': 'Multi-page website',
+    'p1.client': 'A home beauty studio in Germany',
+    'p1.idea': 'A soft, feminine site where clients see every service and price. Book in one tap on WhatsApp',
+    'p1.did': "Multi-page site in German &amp; Russian, a page for every service, AI content generation for the site, mobile-first",
+    'p2.type': 'Landing page',
+    'p2.client': 'A video and content agency in Zurich',
+    'p2.idea': 'A dark, cinematic site where the videos do the talking, and every section leads to "Book a project"',
+    'p2.did': 'Video in hero, services, video gallery, process, client reviews and a booking form, in English &amp; German',
+    'gal.h': 'Reels &amp; creatives', 'gal.p': 'Real examples of stories, ads and reels I made for Instagram',
+    'gal.c1': 'class promo', 'gal.c2': 'collab story', 'gal.c3': 'agency promo', 'gal.c4': 'ad creative',
+    'st1.h': "Contact", 'st1.p': "You send me your idea. We have a call and go through the details, the main goal and your clients",
+    'st2.h': "Offer", 'st2.p': "I send you the price, the deadline and what's included, so everything is clear before we start",
+    'st3.h': "Structure", 'st3.p': "We agree on the structure: which pages and sections your website needs and in what order, and I write the texts if needed",
+    'st4.h': "Moodboard", 'st4.p': "I show you the style and colors, plus a draft of the site and its first pages, and we approve it together",
+    'st5.h': "Website", 'st5.p': "I build the website in the approved style, and it's ready to launch",
+    'st6.h': "Revisions", 'st6.p': "If you have edits, we make them: up to three big rounds of revisions are included, then we finish the project",
+    't1.big': "Everything agreed", 't1.h': 'No surprises', 't1.p': 'We approve the style together first. Only then do I design all the pages and images in that style',
+    't2.big': "2–3 rounds of revisions", 't2.h': "Revisions included", 't2.p': "All stages are approved together, and after approval you get up to three big rounds of revisions",
+    't3.big': "100% prepayment", 't3.h': "Full prepayment", 't3.p': "For a long project, or if paying at once is hard, we can split the payment into two or three parts",
+    't4.big': "Changes after the project", 't4.h': "Changes after the project", 't4.p': "Any changes after the project is finished are paid separately, depending on the task",
+    's1.h': 'Landing page', 's1.p': 'One page that presents your offer and leads visitors to contact or book',
+    's2.h': 'Multi-page website', 's2.p': 'A full website with a page for every service, in one or more languages',
+    's5.h': 'Ad creatives', 's5.p': 'Ads and stories for Instagram that catch the eye and bring in clients',
+    's3.h': 'Presentation', 's3.p': 'A presentation of your business, product or expertise in your brand style', 's3.price': 'on request',
+    's4.h': 'Reels editing', 's4.p': 'Editing of your videos for Instagram: cuts, captions, music and graphics', 's4.note': "Complex reels with graphics from $30 per reel",
+    'about.tag': "hi, I'm Yeva 👩‍💻", 'about.h': 'About me',
+    'about.p': "<span class=\"para\"><span class=\"ln\">I'm a creative person</span> <span class=\"ln\">who loves beauty and aesthetics,</span> <span class=\"ln\">which is why I chose web design</span></span><span class=\"para\"><span class=\"ln\">I listen to what you need and</span> <span class=\"ln\">turn it into creative solutions,</span> <span class=\"ln\">so your brand doesn't just</span> <span class=\"ln\">look good, it sells too 🎨</span></span>",
+    chip1: 'creative', chip2: 'beauty', chip3: 'aesthetics', chip4: 'attention to detail',
+    'contact.h': "Let's work<br>together",
+    'contact.p': "Want a beautiful website that works for your business?<br>Write to me, and I'll create a design that's made just for you",
+    footer: '© 2026 Yeva Soroka · Web designer'
+  },
+  ru: {
+    title: 'Ева Сорока · Портфолио веб-дизайнера',
+    logo: 'Ева Сорока', 'logo.sub': 'веб-дизайн',
+    'nav.projects': 'Проекты', 'nav.process': 'Как я работаю', 'nav.terms': 'Условия', 'nav.services': 'Услуги', 'nav.about': 'Обо мне',
+    'nav.cta': 'Написать в WhatsApp',
+    'hero.title': 'Портфолио', 'hero.role': 'Веб-дизайнер',
+    'hero.offer': "Делаю сайты, презентации и Reels, которые помогают бизнесу и экспертам рассказать о себе, вызвать доверие и привлечь клиентов",
+    'hero.see': 'Смотреть проекты', 'hero.contact': 'Написать мне', 'hero.make': 'Что я делаю',
+    'prod.landing': 'Лендинги', 'prod.multi': 'Многостраничные сайты', 'prod.pres': 'Презентации', 'prod.reels': 'Монтаж Reels',
+    'price.300': 'от $300', 'price.500': 'от $500', 'price.20': "от $15",
+    'lbl.client': 'Клиент', 'lbl.idea': 'Идея', 'lbl.did': 'Что я сделала',
+    'tag.web': 'Веб-дизайн', 'tag.dev': 'Разработка', 'tag.ai': "Генерация ИИ-контента", visit: 'Открыть сайт',
+    'p1.type': 'Многостраничный сайт',
+    'p1.client': 'Домашняя бьюти-студия в Германии',
+    'p1.idea': 'Нежный, женственный сайт: все услуги и цены на виду. Запись в одно касание в WhatsApp',
+    'p1.did': "Сайт на немецком и русском, страница для каждой услуги, генерация ИИ-контента для сайта, мобильная версия",
+    'p2.type': 'Лендинг',
+    'p2.client': 'Видео- и контент-агентство в Цюрихе',
+    'p2.idea': "Тёмный кинематографичный сайт с примерами видео, где каждый блок ведёт к кнопке «Заказать проект»",
+    'p2.did': "Видео на первом экране, услуги, галерея с примерами видео, этапы работы, отзывы и форма заявки — на английском и немецком",
+    'gal.h': 'Reels и креативы', 'gal.p': 'Примеры сторис, рекламных креативов и Reels для Instagram',
+    'gal.c1': 'анонс занятия', 'gal.c2': 'сторис о коллаборациях', 'gal.c3': 'промо агентства', 'gal.c4': 'рекламный креатив',
+    'st1.h': "Знакомство", 'st1.p': "Вы пишете мне свою идею. Мы созваниваемся и обсуждаем детали, основную задачу и ваших клиентов",
+    'st2.h': "Предложение", 'st2.p': "Я присылаю стоимость, сроки и список того, что входит в работу, — до старта всё понятно",
+    'st3.h': "Структура", 'st3.p': "Согласовываем структуру сайта: какие страницы и блоки нужны и в каком порядке, при необходимости пишу тексты",
+    'st4.h': "Мудборд", 'st4.p': "Показываю стиль и цвета, а также примерный макет сайта и первых страниц, и мы утверждаем его вместе",
+    'st5.h': "Сайт", 'st5.p': "Делаю сайт в утверждённом стиле, и он готов к запуску",
+    'st6.h': "Правки", 'st6.p': "Если у вас есть правки, вносим их: доступно до трёх больших кругов правок, после этого завершаем проект",
+    't1.big': "Всё согласовано", 't1.h': 'Без сюрпризов', 't1.p': 'Сначала мы вместе утверждаем стиль, и только потом я делаю все страницы и картинки в этом стиле',
+    't2.big': "2–3 круга правок", 't2.h': "Правки включены", 't2.p': "Все этапы мы согласовываем вместе, и после согласования доступно до трёх больших кругов правок",
+    't3.big': "100% предоплата", 't3.h': "Полная предоплата", 't3.p': "Если проект долгий или оплатить сразу нет возможности, платёж можно разбить на два-три раза",
+    't4.big': "Правки после проекта", 't4.h': "Правки после проекта", 't4.p': "Любые правки после завершения проекта оплачиваются отдельно, в зависимости от задачи",
+    's1.h': 'Лендинг', 's1.p': 'Одна страница, которая рассказывает о вашем предложении и подводит посетителя к заявке или записи',
+    's2.h': 'Многостраничный сайт', 's2.p': 'Полноценный сайт с отдельной страницей для каждой услуги, на одном или нескольких языках',
+    's5.h': 'Рекламные креативы', 's5.p': 'Реклама и сторис для Instagram, которые привлекают внимание и приводят клиентов',
+    's3.h': 'Презентация', 's3.p': 'Презентация вашего бизнеса, продукта или экспертизы в фирменном стиле', 's3.price': 'по запросу',
+    's4.h': 'Монтаж Reels', 's4.p': 'Монтаж ваших видео для Instagram: нарезка, субтитры, музыка и графика', 's4.note': "Сложные ролики с графикой — от $30 за ролик",
+    'about.tag': 'привет, я Ева 👩‍💻', 'about.h': 'Обо мне',
+    'about.p': "<span class=\"para\"><span class=\"ln\">Я творческий человек и</span> <span class=\"ln\">люблю красоту и эстетику —</span> <span class=\"ln\">поэтому и выбрала веб-дизайн</span></span><span class=\"para\"><span class=\"ln\">Я внимательно слушаю, что вам</span> <span class=\"ln\">нужно, и нахожу креативные</span> <span class=\"ln\">решения, чтобы ваш бренд</span> <span class=\"ln\">выглядел не только хорошо,</span> <span class=\"ln\">но и продающе 🎨</span></span>",
+    chip1: 'креативность', chip2: 'красота', chip3: 'эстетика', chip4: 'внимание к деталям',
+    'contact.h': 'Давайте<br>работать вместе',
+    'contact.p': "Хотите красивый сайт, который работает на ваш бизнес?<br>Напишите мне — создам дизайн именно для вас",
+    footer: '© 2026 Ева Сорока · Веб-дизайнер'
+  }
+};
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+};
+const params = new URLSearchParams(location.search);
+
+function setLang(lang) {
+  if (!T[lang]) lang = 'en';
+  document.documentElement.lang = lang;
+  document.title = T[lang].title;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    el.innerHTML = T[lang][key] ?? T.en[key] ?? el.innerHTML;
+  });
+  document.querySelectorAll('#langs button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+  store.set('lang', lang);
+  fitMega();
+}
+document.getElementById('langs').innerHTML = LANGS.map(l => `<button data-lang="${l}">${l.toUpperCase()}</button>`).join('');
+document.getElementById('langs').addEventListener('click', e => { if (e.target.dataset.lang) setLang(e.target.dataset.lang); });
+
+/* "PORTFOLIO" always fills the width between the margins, whatever the language or font */
+function fitMega() {
+  const el = document.getElementById('mega');
+  el.style.fontSize = '100px';
+  el.style.marginLeft = '';
+  const mpx = parseFloat(getComputedStyle(el).marginLeft) || 30;
+  const k = el.scrollWidth / 100;                 // width per 1px of font size
+  const target = document.documentElement.clientWidth - 2 * mpx;
+  const fs = target / (k - 0.114);                // 0.057em side bearing on each end
+  el.style.fontSize = fs + 'px';
+  el.style.marginLeft = (mpx - 0.057 * fs) + 'px';
+}
+addEventListener('resize', fitMega);
+
+/* ================= nav + reveal ================= */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', scrollY > 40);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+const io = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ================= how I work: spotlight ================= */
+const proc = document.getElementById('process');
+const stepList = proc.querySelector('.steps');
+const steps = [...proc.querySelectorAll('.step')];
+const hoverDevice = matchMedia('(hover: hover) and (pointer: fine)');   // computer with a mouse
+
+function spotlight(active, fill) {
+  proc.style.setProperty('--p', fill * 100 + '%');
+  stepList.classList.toggle('focus', active >= 0);
+  steps.forEach((s, i) => {
+    s.classList.toggle('on', active < 0 || i <= active);
+    s.classList.toggle('active', i === active);
+  });
+}
+// phone: the step you've scrolled to lights up
+function updateProcess() {
+  if (hoverDevice.matches) return;
+  const r = proc.getBoundingClientRect();
+  const p = Math.min(1, Math.max(0, (innerHeight * 0.75 - r.top) / (r.height * 0.8)));
+  const active = Math.min(steps.length - 1, Math.floor(p * steps.length));
+  spotlight(active, p);
+}
+// computer: the card under the mouse lights up, and the line fills up to its dot
+steps.forEach((s, i) => s.addEventListener('mouseenter', () => {
+  if (!hoverDevice.matches) return;
+  spotlight(i, (i + 1) / steps.length);
+}));
+stepList.addEventListener('mouseleave', () => { if (hoverDevice.matches) spotlight(-1, 1); });
+function initProcess() { hoverDevice.matches ? spotlight(-1, 1) : updateProcess(); }
+hoverDevice.addEventListener('change', initProcess);
+addEventListener('scroll', updateProcess, { passive: true });
+addEventListener('resize', updateProcess);
+
+/* ================= hero + first project: slide-over on scroll ================= */
+const stack = document.getElementById('stack');
+const slideOn = matchMedia('(min-width: 1201px) and (prefers-reduced-motion: no-preference)');
+const nextSection = document.getElementById('projects');
+const clamp01 = v => Math.min(1, Math.max(0, v));
+function slideOver() {
+  if (!slideOn.matches) { nextSection.style.removeProperty('--s'); return; }
+  const range = stack.offsetHeight - innerHeight;
+  const p = clamp01((scrollY - stack.offsetTop) / range);          // 0..1 over the whole stack
+  nextSection.style.setProperty('--s', 1 - p);                     // starts moving with the first scroll
+}
+function goToProjects(smooth) {
+  scrollTo({ top: stack.offsetTop + stack.offsetHeight - innerHeight, behavior: smooth ? 'smooth' : 'instant' });
+}
+document.querySelectorAll('a[href="#projects"]').forEach(a => a.addEventListener('click', e => {
+  if (!slideOn.matches) return;
+  e.preventDefault(); goToProjects(true);
+}));
+addEventListener('scroll', slideOver, { passive: true });
+addEventListener('resize', slideOver);
+slideOn.addEventListener('change', slideOver);
+addEventListener('load', () => { if (location.hash === '#projects' && slideOn.matches) goToProjects(false); slideOver(); });
+slideOver();
+
+/* ================= star cursor ================= */
+const star = document.getElementById('star');
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.documentElement.classList.add('has-star');
+  let mx = -100, my = -100;
+  // position: follows the pointer on every frame with a light smoothing, on the GPU (transform only)
+  let sx = -100, sy = -100, running = false;
+  function glide() {
+    sx += (mx - sx) * 0.5; sy += (my - sy) * 0.5;
+    star.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0)`;
+    if (Math.abs(mx - sx) > 0.1 || Math.abs(my - sy) > 0.1) requestAnimationFrame(glide); else running = false;
+  }
+  addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!star.classList.contains('on')) { sx = mx; sy = my; star.classList.add('on'); }
+    if (!running) { running = true; requestAnimationFrame(glide); }
+  }, { passive: true });
+  document.addEventListener('mouseleave', () => star.classList.remove('on'));
+}
+
+setLang(params.get('lang') || store.get('lang') || 'en');
+document.fonts.ready.then(fitMega);
+initProcess();
+</script>
+</body>
+</html>
