@@ -308,7 +308,7 @@
 
   /* ---------- 6. about ---------- */
   .about { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, calc(28 * var(--u))) minmax(0, calc(40 * var(--u))); justify-content: center; gap: clamp(calc(36px * var(--fk)), calc(6.25 * var(--u)), 120px); align-items: center; }
-  .about .pic { position: relative; aspect-ratio: 3 / 4; max-height: calc(100svh - var(--pad-top) - var(--pad-bottom) - var(--h2) - 60px); justify-self: end; height: auto; width: 100%; border-radius: 4px; background: url(img/yeva-about.png) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 24px 50px color-mix(in srgb, var(--burgundy-deep) 25%, transparent); }
+  .about .pic { position: relative; aspect-ratio: 3 / 4; max-height: calc(100svh - var(--pad-top) - var(--pad-bottom) - var(--h2) - 60px); justify-self: end; height: auto; width: 100%; border-radius: 4px; background: url(img/yeva-about.webp) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 24px 50px color-mix(in srgb, var(--burgundy-deep) 25%, transparent); }
   .about .pic .tag { position: absolute; right: -14px; bottom: 24px; transform: rotate(-4deg); background: var(--burgundy); color: var(--beige); padding: .55em 1.3em; border-radius: 99px; font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); white-space: nowrap; }
   .about p { font-size: clamp(calc(17px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.45; margin-bottom: clamp(calc(26px * var(--fk)), calc(2.6 * var(--u)), 50px); }
   /* left edge straight, right edge uneven like steps (line breaks are set in the texts below) */
@@ -349,8 +349,8 @@
 
   /* ---------- phones: every section fits one 375×812 screen ---------- */
   @media (max-width: 760px) {
-    /* page frame 390×844: every section is at least one 844px screen */
-    section, .hero { min-height: 844px; }
+    /* page frame 375×812: every section is at least one 812px screen */
+    section, .hero { min-height: 812px; }
     section { padding-top: 68px; padding-bottom: 24px; }
     .section-head { margin-bottom: 14px; }
     /* projects: smaller mockups, tighter text */
@@ -400,7 +400,9 @@
     .about p { font-size: 16px; margin-bottom: 18px; }
   }
 
-  footer { background: var(--ink); color: color-mix(in srgb, var(--beige) 60%, transparent); text-align: center; font-size: 14px; padding: var(--m); }
+  footer { background: var(--ink); color: color-mix(in srgb, var(--beige) 60%, transparent); text-align: center; font-size: 14px; padding: var(--m); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; }
+  footer a { text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
+  footer a:hover { color: var(--beige); }
 
   /* ---------- hero + first project: the project slides up over the hero while scrolling ----------
      .stack is 200 screens tall, .pin stays stuck to the top, the project moves up (translateY 100% to 0)
@@ -454,7 +456,7 @@
 <div class="stack" id="stack"><div class="pin">
 <header class="hero wine grain" id="top">
   <h1 class="display mega" id="mega" data-i18n="hero.title">Portfolio</h1>
-  <div class="photo-wrap"><img src="img/yeva-cover.png" alt="Yeva Soroka"></div>
+  <div class="photo-wrap"><img src="img/yeva-cover.webp" alt="Yeva Soroka"></div>
   <div class="corners">
     <div class="left">
       <div class="name serif-i" data-i18n="logo">Yeva Soroka</div>
@@ -633,12 +635,16 @@
         </div>
       </div>
     </div>
-    <div class="circle reveal"><img src="img/yeva-cover.png" alt="Yeva Soroka"></div>
+    <div class="circle reveal"><img src="img/yeva-cover.webp" alt="Yeva Soroka"></div>
   </div>
   </div>
 </section>
 
-<footer data-i18n="footer">© 2026 Yeva Soroka · Web designer</footer>
+<footer>
+  <span data-i18n="footer">© 2026 Yeva Soroka · Web designer</span>
+  <a href="imprint.html" data-i18n="foot.imprint">Imprint</a>
+  <a href="privacy.html" data-i18n="foot.privacy">Privacy policy</a>
+</footer>
 
 
 <div class="cursor-star" id="star" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0C12.9 7.2 16.8 11.1 24 12C16.8 12.9 12.9 16.8 12 24C11.1 16.8 7.2 12.9 0 12C7.2 11.1 11.1 7.2 12 0Z"/></svg></div>
@@ -691,7 +697,8 @@ const T = {
     chip1: 'creative', chip2: 'beauty', chip3: 'aesthetics', chip4: 'attention to detail',
     'contact.h': "Let's work<br>together",
     'contact.p': "Want a beautiful website that works for your business?<br>Write to me, and I'll create a design that's made just for you",
-    footer: '© 2026 Yeva Soroka · Web designer'
+    footer: '© 2026 Yeva Soroka · Web designer',
+    'foot.imprint': 'Imprint', 'foot.privacy': 'Privacy policy'
   },
   ru: {
     title: 'Ева Сорока · Портфолио веб-дизайнера',
@@ -735,7 +742,8 @@ const T = {
     chip1: 'креативность', chip2: 'красота', chip3: 'эстетика', chip4: 'внимание к деталям',
     'contact.h': 'Давайте<br>работать вместе',
     'contact.p': "Хотите красивый сайт, который работает на ваш бизнес?<br>Напишите мне — создам дизайн именно для вас",
-    footer: '© 2026 Ева Сорока · Веб-дизайнер'
+    footer: '© 2026 Ева Сорока · Веб-дизайнер',
+    'foot.imprint': 'Выходные данные', 'foot.privacy': 'Политика конфиденциальности'
   }
 };
 

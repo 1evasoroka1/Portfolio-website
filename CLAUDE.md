@@ -14,7 +14,8 @@
 - Design source: her Figma file `8JVByjZDs8d9ow11xOEGIY` (Frame 9 = hero, Slides 2 to 4 = projects). She decided to work in local HTML, not in Figma.
 
 ## Tech
-- Single file `index.html` (HTML + CSS + JS) plus `img/` and `fonts/`. No build step.
+- Single file `index.html` (HTML + CSS + JS) plus `img/` and `fonts/`. No build step. Two small legal pages, `imprint.html` and `privacy.html` (EN/RU switch, same fonts, linked from the footer).
+- **Photos:** the two portraits are WebP (`img/yeva-cover.webp`, `img/yeva-about.webp`, about 150 to 230 KB, transparent). The original PNGs are kept in `originals/` and are not needed on the server. Use WebP (`cwebp -q 85 -alpha_q 90`) for any new portrait; project screenshots stay JPG. No Cloudinary on purpose (third party, IP goes to them, one more dependency).
 - Translations live in the `T` object in the script, `data-i18n="key"` on elements, `setLang()`. English defaults are also written in the HTML. Russian: `?lang=ru`. A missing key falls back to English.
 - Run: `cd "/Users/yevka/web design/portfolio-site-v3" && python3 -m http.server 8124`, open http://localhost:8124 (she uses Safari; testing is done with headless Chrome).
 - **Fonts are self-hosted** in `fonts/` (Unbounded for headings, Manrope for text; Latin and Cyrillic). Never add a Google Fonts link again (the visitor's IP would go to Google). Upload `fonts/` together with `img/`.
@@ -28,7 +29,7 @@
 - Style: the v1 look (centred titles with lines, tilted pill badges, burgundy cards, beige and light sections, grain texture) on the Figma grid. Colours: burgundy `#5E0B16`, beige `#EBDCC6`.
 - Logo "Yeva Soroka / web design" stays in English in both languages.
 - **No sideways overflow on phones**: grids use `minmax(0, 1fr)` and step/service titles shrink with `4vw`, because a long Russian word (Предложение, Многостраничный) used to make the page wider than a 334px screen and the phone panned it sideways. Test widths 320, 334, 360, 375, 390 (an iframe of that width works) after changing phone text.
-- **Phone page frame 390×844** (changed from 375×812 on her request): every section is min-height 844px. She tried a "safe area" (335×660, then 335×710 with 20px margins) and went back to the normal margins (16px sides, 68px top, 24px bottom), so there is no separate safe-area rule. "PROJECTS" title is hidden on phones for projects 01 and 03 (order: badge, name, type, mockups, text, tags, button). Re-measure after any change.
+- **Phone page frame 375×812** (she tried 390×844 and went back): every section is min-height 812px. She tried a "safe area" (335×660, then 335×710 with 20px margins) and went back to the normal margins (16px sides, 68px top, 24px bottom), so there is no separate safe-area rule. "PROJECTS" title is hidden on phones for projects 01 and 03 (order: badge, name, type, mockups, text, tags, button). Re-measure after any change.
 - **Phones (≤760px): every section fits one 375×812 screen** (her choice, Nov 2026). Compact phone block at the end of the section CSS: How I work = 2 columns of small cards with no spotlight dimming; Services = compact rows (star, name, price on one line, text under it); smaller mockups, terms and about photo. Re-measure at 375×812 in EN and RU after any copy change.
 - Phone hero (<860px): the photo is pulled up so the hair overlaps "PORTFOLIO", text and product pills (wrapped in rows) follow tightly, so the whole first screen fits on a phone.
 
@@ -100,5 +101,5 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 - Do not touch v1 or v2. Keep memory notes (`design-rules-v3`) in sync with changes.
 
 ## Open items
-- **Imprint and Privacy** links in the footer (two small pages, EN and RU). Needed because it is a business site for German and Swiss clients. Needs her full name, address and email. No cookie banner is needed (no cookies, no analytics, fonts are self-hosted).
+- **Imprint and Privacy**: done (`imprint.html`, `privacy.html`, footer links). Address on them: Yeva Soroka, Webermühle 33, 5432 Neuenhof, Switzerland (postcode 5432 added by Claude, she should confirm), email 1evasoroka1@gmail.com. No UID/VAT number is stated (she has not given one). Hosting is **Vercel** (named in section 3 of the privacy page, with a note that data may be processed in the USA). The pages are generated from a small script; edit the HTML files directly from now on. No cookie banner is needed (no cookies, no analytics, fonts are self-hosted).
 - **GitHub**: v3 is linked to `git@github.com:1evasoroka1/Portfolio-website.git` (branch `main`, first commit "Initial" pushed). Never push without her go-ahead; she signs in herself (no passwords or tokens are entered by Claude).
