@@ -12,6 +12,7 @@
 - **Key decisions she made:** v3 look (burgundy/beige, Unbounded + Manrope); Terms as numbered rows; card titles 32px and text 24px; favicon = beige circle, burgundy "YS"; no Cloudinary; no analytics or cookies (so no cookie banner); hosting on Vercel.
 
 ### What changed recently (newest first)
+- Mobile PageSpeed round 2: extra small image sizes (`-480` screenshots and reels, `-240` phone screenshots, `yeva-cover-480/-720`, `yeva-about-480` via `image-set`), contact circle no longer loads the full portrait; scroll effects read positions from a ResizeObserver cache (no forced reflow); `<main>` landmark; phone "Projects" h2 is visually hidden instead of `display:none` (heading order).
 - Speed and PageSpeed fixes: resized WebP screenshots with `srcset`, preloaded hero image and fonts, "PORTFOLIO" fitted without layout shift or forced reflow.
 - Pre-deploy audit: meta tags, Open Graph and Twitter preview with a 1200×630 image, canonical, sitemap, heading order, alt/size/lazy on images, `noopener noreferrer`.
 - Favicon (YS circle, optically centred), Imprint and Privacy pages (Vercel named as host), portraits as WebP.

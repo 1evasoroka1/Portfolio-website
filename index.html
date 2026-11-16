@@ -31,7 +31,7 @@
 <!-- ВАЖНО: если добавишь GA4 или Meta Pixel, сайт начнёт ставить cookies. Тогда нужны баннер согласия и обновлённая страница Privacy (сейчас там написано, что аналитики нет) -->
 <link rel="preload" href="fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="img/yeva-cover.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="img/yeva-cover.webp" imagesrcset="img/yeva-cover-480.webp 480w, img/yeva-cover-720.webp 720w, img/yeva-cover.webp 941w" imagesizes="(max-width: 860px) 100vw, min(90svh, 56vw)" as="image" type="image/webp" fetchpriority="high">
 <script>
 /* Russian visitors: set the language early and preload the Cyrillic fonts (English visitors do not download them) */
 (function () {
@@ -355,7 +355,7 @@
 
   /* ---------- 6. about ---------- */
   .about { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, calc(28 * var(--u))) minmax(0, calc(40 * var(--u))); justify-content: center; gap: clamp(calc(36px * var(--fk)), calc(6.25 * var(--u)), 120px); align-items: center; }
-  .about .pic { position: relative; aspect-ratio: 3 / 4; max-height: calc(100svh - var(--pad-top) - var(--pad-bottom) - var(--h2) - 60px); justify-self: end; height: auto; width: 100%; border-radius: 4px; background: url(img/yeva-about.webp) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 24px 50px color-mix(in srgb, var(--burgundy-deep) 25%, transparent); }
+  .about .pic { position: relative; aspect-ratio: 3 / 4; max-height: calc(100svh - var(--pad-top) - var(--pad-bottom) - var(--h2) - 60px); justify-self: end; height: auto; width: 100%; border-radius: 4px; background: url(img/yeva-about.webp) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); background: image-set(url(img/yeva-about-480.webp) 1x, url(img/yeva-about.webp) 2x) 32% 50% / 125% auto no-repeat, radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 24px 50px color-mix(in srgb, var(--burgundy-deep) 25%, transparent); }
   .about .pic .tag { position: absolute; right: -14px; bottom: 24px; transform: rotate(-4deg); background: var(--burgundy); color: var(--beige); padding: .55em 1.3em; border-radius: 99px; font-size: clamp(calc(16px * var(--fk)), calc(1.25 * var(--u)), 24px); white-space: nowrap; }
   .about p { font-size: clamp(calc(17px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.45; margin-bottom: clamp(calc(26px * var(--fk)), calc(2.6 * var(--u)), 50px); }
   /* left edge straight, right edge uneven like steps (line breaks are set in the texts below) */
@@ -401,7 +401,7 @@
     section { padding-top: 68px; padding-bottom: 24px; }
     .section-head { margin-bottom: 14px; }
     /* projects: smaller mockups, tighter text */
-    #projects .section-head, #project-3 .section-head { display: none; }   /* no "PROJECTS" title on phones, so "Visit website" fits */
+    #projects .section-head, #project-3 .section-head { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); }   /* no "PROJECTS" title on phones, so "Visit website" fits */
     /* order: badge, name, type, then the mockups, then the description */
     .project { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
     .project .text { display: contents; }
@@ -499,12 +499,13 @@
   </div>
 </nav>
 
+<main>
 <!-- 1. HERO -->
 <div class="stack" id="stack"><div class="pin">
 <header class="hero wine grain" id="top">
   <h1 class="display mega" id="mega" data-i18n="hero.title">Portfolio</h1>
   <span class="display" id="megaMeasure" data-i18n="hero.title" aria-hidden="true">Portfolio</span><i id="megaM" aria-hidden="true"></i>
-  <div class="photo-wrap"><img src="img/yeva-cover.webp" alt="Yeva Soroka, web designer" width="941" height="1672" fetchpriority="high" decoding="async"></div>
+  <div class="photo-wrap"><img src="img/yeva-cover.webp" srcset="img/yeva-cover-480.webp 480w, img/yeva-cover-720.webp 720w, img/yeva-cover.webp 941w" sizes="(max-width: 860px) 100vw, min(90svh, 56vw)" alt="Yeva Soroka, web designer" width="941" height="1672" fetchpriority="high" decoding="async"></div>
   <div class="corners">
     <div class="left">
       <div class="name serif-i" data-i18n="logo">Yeva Soroka</div>
@@ -547,9 +548,9 @@
       </div>
       <div class="mock-area">
         <div class="stage lu">
-          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-videos-1440.webp" srcset="img/lu-videos-720.webp 720w, img/lu-videos-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp video gallery" loading="lazy" width="1440" height="808" decoding="async"></div>
-          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-desktop-1440.webp" srcset="img/lu-desktop-720.webp 720w, img/lu-desktop-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp home page" loading="lazy" width="1440" height="900" decoding="async"></div>
-          <div class="phone mob"><img src="img/lu-mobile-971.webp" srcset="img/lu-mobile-480.webp 480w, img/lu-mobile-971.webp 971w" sizes="(max-width: 1200px) 24vw, 12vw" alt="LightUp on mobile" loading="lazy" width="971" height="1874" decoding="async"></div>
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-videos-1440.webp" srcset="img/lu-videos-480.webp 480w, img/lu-videos-720.webp 720w, img/lu-videos-1440.webp 1440w" sizes="(max-width: 760px) 58vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp video gallery" loading="lazy" width="1440" height="808" decoding="async"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-desktop-1440.webp" srcset="img/lu-desktop-480.webp 480w, img/lu-desktop-720.webp 720w, img/lu-desktop-1440.webp 1440w" sizes="(max-width: 760px) 58vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp home page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="phone mob"><img src="img/lu-mobile-971.webp" srcset="img/lu-mobile-240.webp 240w, img/lu-mobile-480.webp 480w, img/lu-mobile-971.webp 971w" sizes="(max-width: 760px) 20vw, (max-width: 1200px) 24vw, 14vw" alt="LightUp on mobile" loading="lazy" width="971" height="1874" decoding="async"></div>
         </div>
       </div>
     </a>
@@ -565,10 +566,10 @@
     <div class="section-head flip reveal"><h2 class="display" data-i18n="gal.h">Reels &amp; creatives</h2><span class="count">02</span></div>
     <div class="reels">
       <div class="gallery reveal">
-        <figure class="item"><img src="img/cr-1-720.webp" srcset="img/cr-1-360.webp 360w, img/cr-1-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="High heels class story, orange" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c1">class promo</figcaption></figure>
-        <figure class="item"><img src="img/cr-3-720.webp" srcset="img/cr-3-360.webp 360w, img/cr-3-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="Open for collabs story" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c2">collab story</figcaption></figure>
-        <figure class="item"><img src="img/cr-5-720.webp" srcset="img/cr-5-360.webp 360w, img/cr-5-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="Open for collabs, LightUp" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c3">agency promo</figcaption></figure>
-        <figure class="item"><img src="img/cr-4-720.webp" srcset="img/cr-4-360.webp 360w, img/cr-4-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="High heels class story, gray" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c4">ad creative</figcaption></figure>
+        <figure class="item"><img src="img/cr-1-720.webp" srcset="img/cr-1-360.webp 360w, img/cr-1-480.webp 480w, img/cr-1-720.webp 720w" sizes="(max-width: 860px) 66vw, 24vw" alt="High heels class story, orange" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c1">class promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-3-720.webp" srcset="img/cr-3-360.webp 360w, img/cr-3-480.webp 480w, img/cr-3-720.webp 720w" sizes="(max-width: 860px) 66vw, 24vw" alt="Open for collabs story" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c2">collab story</figcaption></figure>
+        <figure class="item"><img src="img/cr-5-720.webp" srcset="img/cr-5-360.webp 360w, img/cr-5-480.webp 480w, img/cr-5-720.webp 720w" sizes="(max-width: 860px) 66vw, 24vw" alt="Open for collabs, LightUp" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c3">agency promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-4-720.webp" srcset="img/cr-4-360.webp 360w, img/cr-4-480.webp 480w, img/cr-4-720.webp 720w" sizes="(max-width: 860px) 66vw, 24vw" alt="High heels class story, gray" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c4">ad creative</figcaption></figure>
       </div>
       <div class="text reveal">
         <p data-i18n="gal.p">Real examples of stories, ads and reels I made for Instagram</p>
@@ -596,9 +597,9 @@
       </div>
       <div class="mock-area">
         <div class="stage olha">
-          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop2-1440.webp" srcset="img/olha-desktop2-720.webp 720w, img/olha-desktop2-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty massages page" loading="lazy" width="1440" height="900" decoding="async"></div>
-          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop-1440.webp" srcset="img/olha-desktop-720.webp 720w, img/olha-desktop-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty home page" loading="lazy" width="1440" height="900" decoding="async"></div>
-          <div class="phone mob"><img src="img/olha-mobile-780.webp" srcset="img/olha-mobile-390.webp 390w, img/olha-mobile-780.webp 780w" sizes="(max-width: 1200px) 24vw, 12vw" alt="Olha's Beauty on mobile" loading="lazy" width="780" height="1688" decoding="async"></div>
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop2-1440.webp" srcset="img/olha-desktop2-480.webp 480w, img/olha-desktop2-720.webp 720w, img/olha-desktop2-1440.webp 1440w" sizes="(max-width: 760px) 58vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty massages page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop-1440.webp" srcset="img/olha-desktop-480.webp 480w, img/olha-desktop-720.webp 720w, img/olha-desktop-1440.webp 1440w" sizes="(max-width: 760px) 58vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty home page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="phone mob"><img src="img/olha-mobile-780.webp" srcset="img/olha-mobile-240.webp 240w, img/olha-mobile-390.webp 390w, img/olha-mobile-780.webp 780w" sizes="(max-width: 760px) 20vw, (max-width: 1200px) 24vw, 14vw" alt="Olha's Beauty on mobile" loading="lazy" width="780" height="1688" decoding="async"></div>
         </div>
       </div>
     </a>
@@ -683,10 +684,11 @@
         </div>
       </div>
     </div>
-    <div class="circle reveal"><img src="img/yeva-cover.webp" alt="Portrait of Yeva Soroka" width="941" height="1672" loading="lazy" decoding="async"></div>
+    <div class="circle reveal"><img src="img/yeva-cover.webp" srcset="img/yeva-cover-480.webp 480w, img/yeva-cover-720.webp 720w, img/yeva-cover.webp 941w" sizes="(max-width: 860px) 48vw, 25vw" alt="Portrait of Yeva Soroka" width="941" height="1672" loading="lazy" decoding="async"></div>
   </div>
   </div>
 </section>
+</main>
 
 <footer>
   <span data-i18n="footer">© 2026 Yeva Soroka · Web designer</span>
@@ -869,9 +871,9 @@ function spotlight(active, fill) {
 }
 // phone: the step you've scrolled to lights up
 function updateProcess() {
-  if (hoverDevice.matches) return;
-  const r = proc.getBoundingClientRect();
-  const p = Math.min(1, Math.max(0, (innerHeight * 0.75 - r.top) / (r.height * 0.8)));
+  if (hoverDevice.matches || !geo.procH) return;
+  const top = geo.procTop - scrollY;   // positions come from the cache below, so scrolling never forces a layout
+  const p = Math.min(1, Math.max(0, (innerHeight * 0.75 - top) / (geo.procH * 0.8)));
   const active = Math.min(steps.length - 1, Math.floor(p * steps.length));
   spotlight(active, p);
 }
@@ -893,8 +895,9 @@ const nextSection = document.getElementById('projects');
 const clamp01 = v => Math.min(1, Math.max(0, v));
 function slideOver() {
   if (!slideOn.matches) { nextSection.style.removeProperty('--s'); return; }
-  const range = stack.offsetHeight - innerHeight;
-  const p = clamp01((scrollY - stack.offsetTop) / range);          // 0..1 over the whole stack
+  if (!geo.stackH) return;
+  const range = geo.stackH - innerHeight;
+  const p = clamp01((scrollY - geo.stackTop) / range);          // 0..1 over the whole stack
   nextSection.style.setProperty('--s', 1 - p);                     // starts moving with the first scroll
 }
 function goToProjects(smooth) {
@@ -907,8 +910,15 @@ document.querySelectorAll('a[href="#projects"]').forEach(a => a.addEventListener
 addEventListener('scroll', slideOver, { passive: true });
 addEventListener('resize', slideOver);
 slideOn.addEventListener('change', slideOver);
-addEventListener('load', () => { if (location.hash === '#projects' && slideOn.matches) goToProjects(false); slideOver(); });
-slideOver();
+addEventListener('load', () => { if (location.hash === '#projects' && slideOn.matches) goToProjects(false); });
+
+/* positions of the stack and How I work, measured only when sizes change (layout is already done then) */
+const geo = {};
+new ResizeObserver(() => {
+  geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
+  geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
+  slideOver(); if (!hoverDevice.matches) updateProcess();
+}).observe(document.body);
 
 /* ================= star cursor ================= */
 const star = document.getElementById('star');
