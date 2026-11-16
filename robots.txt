@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://soroka-webdesign.vercel.app/sitemap.xml

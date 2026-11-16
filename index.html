@@ -8,9 +8,46 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Yeva Soroka · Web Designer Portfolio</title>
-<meta name="description" content="Yeva Soroka, web designer. Landing pages, multi-page websites, presentations and reels editing for small businesses and experts.">
+<meta name="description" content="Yeva Soroka, web designer in Switzerland. Landing pages, multi-page websites, presentations and reels editing for businesses and experts">
+<meta name="theme-color" content="#2A0409">
+<link rel="canonical" href="https://soroka-webdesign.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Yeva Soroka">
+<meta property="og:title" content="Yeva Soroka · Web Designer Portfolio">
+<meta property="og:description" content="Yeva Soroka, web designer in Switzerland. Landing pages, multi-page websites, presentations and reels editing for businesses and experts">
+<meta property="og:url" content="https://soroka-webdesign.vercel.app/">
+<meta property="og:image" content="https://soroka-webdesign.vercel.app/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Yeva Soroka, web designer: landing pages, websites, reels and presentations">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yeva Soroka · Web Designer Portfolio">
+<meta name="twitter:description" content="Yeva Soroka, web designer in Switzerland. Landing pages, multi-page websites, presentations and reels editing for businesses and experts">
+<meta name="twitter:image" content="https://soroka-webdesign.vercel.app/img/og-image.jpg">
+<!-- GA4: вставити тег тут -->
+<!-- Meta Pixel: вставити тут -->
+<!-- ВАЖНО: если добавишь GA4 или Meta Pixel, сайт начнёт ставить cookies. Тогда нужны баннер согласия и обновлённая страница Privacy (сейчас там написано, что аналитики нет) -->
 <link rel="preload" href="fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/yeva-cover.webp" as="image" type="image/webp" fetchpriority="high">
+<script>
+/* Russian visitors: set the language early and preload the Cyrillic fonts (English visitors do not download them) */
+(function () {
+  try {
+    var l = new URLSearchParams(location.search).get('lang') || localStorage.getItem('lang') || '';
+    if (l === 'ru') {
+      document.documentElement.lang = 'ru';
+      ['unbounded', 'manrope'].forEach(function (f) {
+        var k = document.createElement('link');
+        k.rel = 'preload'; k.as = 'font'; k.type = 'font/woff2'; k.crossOrigin = ''; k.href = 'fonts/' + f + '-cyrillic.woff2';
+        document.head.appendChild(k);
+      });
+    }
+  } catch (e) {}
+})();
+</script>
 <style>
   /* Fonts are stored in the fonts/ folder (self-hosted, nothing is loaded from Google).
      Unbounded (headings) and Manrope (text), variable fonts, with Latin (EN, DE) and Cyrillic (RU, UK) letters. */
@@ -55,7 +92,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body { background: var(--ink); color: var(--beige); font-family: var(--f-body); line-height: 1.6; overflow-x: hidden; }
-  img { display: block; max-width: 100%; }
+  img { display: block; max-width: 100%; height: auto; }
   a { color: inherit; }
   button { font: inherit; }
 
@@ -141,7 +178,10 @@
 
   /* ---------- 1. hero (Frame 9) ---------- */
   .hero { min-height: 100svh; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
-  .hero .mega { position: relative; z-index: 1; width: max-content; white-space: nowrap; font-size: calc(17 * var(--u)); margin: var(--pad-top) 0 0 var(--m); }
+  .hero .mega { position: relative; z-index: 1; width: max-content; white-space: nowrap; font-size: calc((100vw - 2 * var(--m)) * .14233); margin: var(--pad-top) 0 0 calc(var(--m) - .057em); }
+  html[lang=ru] .hero .mega { font-size: calc((100vw - 2 * var(--m)) * .1184); }   /* the JS fit below only fine-tunes these starting sizes (no layout jump) */
+  #megaMeasure { position: absolute; left: -9999px; top: 0; visibility: hidden; pointer-events: none; white-space: nowrap; font-size: 100px; }
+  #megaM { position: absolute; left: 0; top: 0; width: var(--m); height: 0; visibility: hidden; pointer-events: none; }
   /* face close-up: the frame shows the photo down to the end of the hair, then fades out */
   .hero .photo-wrap {
     --H: min(160svh, 100vw);   /* height of the full photo, same framing as the presentation cover */
@@ -279,7 +319,7 @@
     transition: background .5s, color .5s, transform .5s, opacity .5s, box-shadow .5s;
   }
   .step .n { display: block; font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(44px * var(--fk)), calc(3.75 * var(--u)), 72px); line-height: 1; }
-  .step h4 { font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; margin: auto 0 -6px; }   /* same as the service names */
+  .step h3 { font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; margin: auto 0 -6px; }   /* same as the service names */
   .step p { font-size: var(--t-body); line-height: 1.4; opacity: .9; max-width: 640px; min-height: 4.2em; }  /* 3 lines in every card, so the titles line up */
 
   /* spotlight: while .focus is on, the active step is big and bright and the others wait dimmed.
@@ -345,7 +385,7 @@
   .qr { display: block; }
   .qr img { width: 100%; height: auto; aspect-ratio: 1; padding: 12px; border-radius: 14px; background: #EBDCC6; image-rendering: pixelated; }
   .contact .circle { position: relative; width: min(calc(30 * var(--u)), calc(100svh - var(--pad-top) - var(--pad-bottom) - 2.3 * var(--h2) - 2 * var(--g)), 600px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid var(--beige); background: radial-gradient(circle at 50% 35%, var(--burgundy-mid), var(--burgundy-deep)); box-shadow: 0 30px 70px rgba(0,0,0,.45); }
-  .contact .circle img { position: absolute; left: 50%; top: -10%; height: 150%; max-width: none; transform: translateX(-50%); }
+  .contact .circle img { position: absolute; left: 50%; top: -10%; height: 150%; width: auto; max-width: none; transform: translateX(-50%); }
   @media (max-width: 860px) {
     .contact { grid-template-columns: 1fr; gap: 24px; align-content: start; justify-content: stretch; }
     .contact > div:first-child { display: contents; }
@@ -386,7 +426,7 @@
     .step .card { min-height: 0; padding: 12px 13px; gap: 4px; border-radius: 18px; }
     .steps.focus .step .card, .steps.focus .step.active .card { opacity: 1; transform: none; box-shadow: none; }
     .step .n { font-size: 24px; }
-    .step h4 { font-size: clamp(12px, 4vw, 15px); margin: 2px 0 0; overflow-wrap: anywhere; }   /* "Предложение" fits on narrow phones too */
+    .step h3 { font-size: clamp(12px, 4vw, 15px); margin: 2px 0 0; overflow-wrap: anywhere; }   /* "Предложение" fits on narrow phones too */
     .step p { font-size: 13px; line-height: 1.4; min-height: 0; }
     /* services: compact rows, star + name + price on one line, text under it */
     .services { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 8px; }
@@ -455,7 +495,7 @@
   </ul>
   <div class="right">
     <div class="langs" id="langs"></div>
-    <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener" data-i18n="nav.cta">Write on WhatsApp</a>
+    <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener noreferrer" data-i18n="nav.cta">Write on WhatsApp</a>
   </div>
 </nav>
 
@@ -463,7 +503,8 @@
 <div class="stack" id="stack"><div class="pin">
 <header class="hero wine grain" id="top">
   <h1 class="display mega" id="mega" data-i18n="hero.title">Portfolio</h1>
-  <div class="photo-wrap"><img src="img/yeva-cover.webp" alt="Yeva Soroka"></div>
+  <span class="display" id="megaMeasure" data-i18n="hero.title" aria-hidden="true">Portfolio</span><i id="megaM" aria-hidden="true"></i>
+  <div class="photo-wrap"><img src="img/yeva-cover.webp" alt="Yeva Soroka, web designer" width="941" height="1672" fetchpriority="high" decoding="async"></div>
   <div class="corners">
     <div class="left">
       <div class="name serif-i" data-i18n="logo">Yeva Soroka</div>
@@ -491,7 +532,7 @@
 <section class="wine grain" id="projects">
   <div class="inner">
     <div class="section-head reveal"><h2 class="display" data-i18n="nav.projects">Projects</h2></div>
-    <a class="project alt reveal" href="https://www.thelightup.ch" target="_blank" rel="noopener">
+    <a class="project alt reveal" href="https://www.thelightup.ch" target="_blank" rel="noopener noreferrer">
       <div class="text">
         <span class="count num">01</span>
         <h3 class="display">The LightUp Agency</h3>
@@ -506,9 +547,9 @@
       </div>
       <div class="mock-area">
         <div class="stage lu">
-          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-videos.jpg" alt="LightUp video gallery" loading="lazy"></div>
-          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-desktop.jpg" alt="LightUp home page" loading="lazy"></div>
-          <div class="phone mob"><img src="img/lu-mobile.jpg" alt="LightUp on mobile" loading="lazy"></div>
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-videos-1440.webp" srcset="img/lu-videos-720.webp 720w, img/lu-videos-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp video gallery" loading="lazy" width="1440" height="808" decoding="async"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/lu-desktop-1440.webp" srcset="img/lu-desktop-720.webp 720w, img/lu-desktop-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="LightUp home page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="phone mob"><img src="img/lu-mobile-971.webp" srcset="img/lu-mobile-480.webp 480w, img/lu-mobile-971.webp 971w" sizes="(max-width: 1200px) 24vw, 12vw" alt="LightUp on mobile" loading="lazy" width="971" height="1874" decoding="async"></div>
         </div>
       </div>
     </a>
@@ -524,10 +565,10 @@
     <div class="section-head flip reveal"><h2 class="display" data-i18n="gal.h">Reels &amp; creatives</h2><span class="count">02</span></div>
     <div class="reels">
       <div class="gallery reveal">
-        <figure class="item"><img src="img/cr-1.jpg" alt="High heels class story, orange" loading="lazy"><figcaption data-i18n="gal.c1">class promo</figcaption></figure>
-        <figure class="item"><img src="img/cr-3.jpg" alt="Open for collabs story" loading="lazy"><figcaption data-i18n="gal.c2">collab story</figcaption></figure>
-        <figure class="item"><img src="img/cr-5.jpg" alt="Open for collabs, LightUp" loading="lazy"><figcaption data-i18n="gal.c3">agency promo</figcaption></figure>
-        <figure class="item"><img src="img/cr-4.jpg" alt="High heels class story, gray" loading="lazy"><figcaption data-i18n="gal.c4">ad creative</figcaption></figure>
+        <figure class="item"><img src="img/cr-1-720.webp" srcset="img/cr-1-360.webp 360w, img/cr-1-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="High heels class story, orange" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c1">class promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-3-720.webp" srcset="img/cr-3-360.webp 360w, img/cr-3-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="Open for collabs story" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c2">collab story</figcaption></figure>
+        <figure class="item"><img src="img/cr-5-720.webp" srcset="img/cr-5-360.webp 360w, img/cr-5-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="Open for collabs, LightUp" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c3">agency promo</figcaption></figure>
+        <figure class="item"><img src="img/cr-4-720.webp" srcset="img/cr-4-360.webp 360w, img/cr-4-720.webp 720w" sizes="(max-width: 860px) 62vw, 21vw" alt="High heels class story, gray" loading="lazy" width="720" height="1280" decoding="async"><figcaption data-i18n="gal.c4">ad creative</figcaption></figure>
       </div>
       <div class="text reveal">
         <p data-i18n="gal.p">Real examples of stories, ads and reels I made for Instagram</p>
@@ -540,7 +581,7 @@
 <section class="wine grain" id="project-3">
   <div class="inner">
     <div class="section-head reveal"><h2 class="display" data-i18n="nav.projects">Projects</h2></div>
-    <a class="project reveal" href="https://olhasbeauty.vercel.app" target="_blank" rel="noopener">
+    <a class="project reveal" href="https://olhasbeauty.vercel.app" target="_blank" rel="noopener noreferrer">
       <div class="text">
         <span class="count num">03</span>
         <h3 class="display">Olha's Beauty</h3>
@@ -555,9 +596,9 @@
       </div>
       <div class="mock-area">
         <div class="stage olha">
-          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop2.jpg" alt="Olha's Beauty massages page" loading="lazy"></div>
-          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop.jpg" alt="Olha's Beauty home page" loading="lazy"></div>
-          <div class="phone mob"><img src="img/olha-mobile.jpg" alt="Olha's Beauty on mobile" loading="lazy"></div>
+          <div class="browser back"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop2-1440.webp" srcset="img/olha-desktop2-720.webp 720w, img/olha-desktop2-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty massages page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="browser front"><div class="bar"><i></i><i></i><i></i></div><img src="img/olha-desktop-1440.webp" srcset="img/olha-desktop-720.webp 720w, img/olha-desktop-1440.webp 1440w" sizes="(max-width: 760px) 60vw, (max-width: 1200px) 55vw, 34vw" alt="Olha's Beauty home page" loading="lazy" width="1440" height="900" decoding="async"></div>
+          <div class="phone mob"><img src="img/olha-mobile-780.webp" srcset="img/olha-mobile-390.webp 390w, img/olha-mobile-780.webp 780w" sizes="(max-width: 1200px) 24vw, 12vw" alt="Olha's Beauty on mobile" loading="lazy" width="780" height="1688" decoding="async"></div>
         </div>
       </div>
     </a>
@@ -571,12 +612,12 @@
     <div class="process">
       <div class="track"><div class="fill"></div></div>
       <ol class="steps">
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">01</span><h4 data-i18n="st1.h">Contact</h4><p data-i18n="st1.p">You send me your idea. We have a call and go through the details, the main goal and your clients</p></div></li>
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">02</span><h4 data-i18n="st2.h">Offer</h4><p data-i18n="st2.p">I send you the price, the deadline and what's included, so everything is clear before we start</p></div></li>
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">03</span><h4 data-i18n="st3.h">Structure</h4><p data-i18n="st3.p">We agree on the structure: which pages and sections your website needs and in what order, and I write the texts if needed</p></div></li>
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">04</span><h4 data-i18n="st4.h">Moodboard</h4><p data-i18n="st4.p">I show you the style and colors, plus a draft of the site and its first pages, and we approve it together</p></div></li>
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">05</span><h4 data-i18n="st5.h">Website</h4><p data-i18n="st5.p">I build the website in the approved style, and it's ready to launch</p></div></li>
-        <li class="step"><span class="dot"></span><div class="card"><span class="n">06</span><h4 data-i18n="st6.h">Revisions</h4><p data-i18n="st6.p">If you have edits, we make them: up to three big rounds of revisions are included, then we finish the project</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">01</span><h3 data-i18n="st1.h">Contact</h3><p data-i18n="st1.p">You send me your idea. We have a call and go through the details, the main goal and your clients</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">02</span><h3 data-i18n="st2.h">Offer</h3><p data-i18n="st2.p">I send you the price, the deadline and what's included, so everything is clear before we start</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">03</span><h3 data-i18n="st3.h">Structure</h3><p data-i18n="st3.p">We agree on the structure: which pages and sections your website needs and in what order, and I write the texts if needed</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">04</span><h3 data-i18n="st4.h">Moodboard</h3><p data-i18n="st4.p">I show you the style and colors, plus a draft of the site and its first pages, and we approve it together</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">05</span><h3 data-i18n="st5.h">Website</h3><p data-i18n="st5.p">I build the website in the approved style, and it's ready to launch</p></div></li>
+        <li class="step"><span class="dot"></span><div class="card"><span class="n">06</span><h3 data-i18n="st6.h">Revisions</h3><p data-i18n="st6.p">If you have edits, we make them: up to three big rounds of revisions are included, then we finish the project</p></div></li>
       </ol>
     </div>
   </div>
@@ -633,16 +674,16 @@
       <!-- each QR code sits under its own button -->
       <div class="links">
         <div class="link">
-          <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="qr" href="https://wa.me/41763099553" target="_blank" rel="noopener"><img src="img/qr-whatsapp.png" alt="WhatsApp QR code"></a>
+          <a class="btn solid" href="https://wa.me/41763099553" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="qr" href="https://wa.me/41763099553" target="_blank" rel="noopener noreferrer"><img src="img/qr-whatsapp.png" alt="WhatsApp QR code" width="432" height="432" loading="lazy" decoding="async"></a>
         </div>
         <div class="link">
-          <a class="btn ghost" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener">Instagram</a>
-          <a class="qr" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener"><img src="img/qr-instagram.png" alt="Instagram QR code"></a>
+          <a class="btn ghost" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a class="qr" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener noreferrer"><img src="img/qr-instagram.png" alt="Instagram QR code" width="496" height="496" loading="lazy" decoding="async"></a>
         </div>
       </div>
     </div>
-    <div class="circle reveal"><img src="img/yeva-cover.webp" alt="Yeva Soroka"></div>
+    <div class="circle reveal"><img src="img/yeva-cover.webp" alt="Portrait of Yeva Soroka" width="941" height="1672" loading="lazy" decoding="async"></div>
   </div>
   </div>
 </section>
@@ -664,6 +705,7 @@ const LANGS = ['en', 'ru'];
 const T = {
   en: {
     title: 'Yeva Soroka · Web Designer Portfolio',
+    desc: 'Yeva Soroka, web designer in Switzerland. Landing pages, multi-page websites, presentations and reels editing for businesses and experts',
     logo: 'Yeva Soroka', 'logo.sub': 'web design',
     'nav.projects': 'Projects', 'nav.process': 'How I work', 'nav.terms': 'Terms', 'nav.services': 'Services', 'nav.about': 'About',
     'nav.cta': 'Write on WhatsApp',
@@ -709,6 +751,7 @@ const T = {
   },
   ru: {
     title: 'Ева Сорока · Портфолио веб-дизайнера',
+    desc: 'Ева Сорока, веб-дизайнер из Швейцарии. Лендинги, многостраничные сайты, презентации и монтаж Reels для бизнеса и экспертов',
     logo: 'Ева Сорока', 'logo.sub': 'веб-дизайн',
     'nav.projects': 'Проекты', 'nav.process': 'Как я работаю', 'nav.terms': 'Условия', 'nav.services': 'Услуги', 'nav.about': 'Обо мне',
     'nav.cta': 'Написать в WhatsApp',
@@ -764,6 +807,7 @@ function setLang(lang) {
   if (!T[lang]) lang = 'en';
   document.documentElement.lang = lang;
   document.title = T[lang].title;
+  document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach(m => { m.content = T[lang].desc; });
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     el.innerHTML = T[lang][key] ?? T.en[key] ?? el.innerHTML;
@@ -776,26 +820,29 @@ document.getElementById('langs').innerHTML = LANGS.map(l => `<button data-lang="
 document.getElementById('langs').addEventListener('click', e => { if (e.target.dataset.lang) setLang(e.target.dataset.lang); });
 
 /* "PORTFOLIO" always fills the width between the margins, whatever the language or font */
-let megaFitting = false;
+/* "PORTFOLIO" fills the width between the margins. ResizeObserver delivers the sizes the browser has already laid out
+   (width of the word at 100px, the page margin, the window width), so no layout is forced from the script.
+   It re-runs by itself when the window changes, the language changes or the real font replaces the fallback. */
+const megaEl = document.getElementById('mega');
+const megaSize = { word: 0, margin: 0, view: 0 };
 function fitMega() {
-  const el = document.getElementById('mega');
-  megaFitting = true;
-  el.style.fontSize = '100px';
-  el.style.marginLeft = '';
-  const mpx = parseFloat(getComputedStyle(el).marginLeft) || 30;
-  const k = el.scrollWidth / 100;                 // width per 1px of font size
-  const target = document.documentElement.clientWidth - 2 * mpx;
-  const fs = target / (k - 0.114);                // 0.057em side bearing on each end
-  el.style.fontSize = fs + 'px';
-  el.style.marginLeft = (mpx - 0.057 * fs) + 'px';
-  requestAnimationFrame(() => { megaFitting = false; });
+  const { word, margin, view } = megaSize;
+  if (!word || !margin || !view) return;
+  const fs = (view - 2 * margin) / (word / 100 - 0.114);   // 0.057em side bearing on each end
+  megaEl.style.fontSize = fs + 'px';
+  megaEl.style.marginLeft = (margin - 0.057 * fs) + 'px';
 }
-addEventListener('resize', fitMega);
-addEventListener('orientationchange', fitMega);
-/* the word changes width when the real font replaces the fallback (slow network, Cyrillic file loads late),
-   so fit it again whenever its own width changes, and when any font finishes loading */
-new ResizeObserver(() => { if (!megaFitting) fitMega(); }).observe(document.getElementById('mega'));
-document.fonts.addEventListener('loadingdone', fitMega);
+const megaRO = new ResizeObserver(entries => {
+  for (const e of entries) {
+    if (e.target.id === 'megaMeasure') megaSize.word = e.contentRect.width;
+    else if (e.target.id === 'megaM') megaSize.margin = e.contentRect.width;
+    else megaSize.view = e.contentRect.width;
+  }
+  fitMega();
+});
+megaRO.observe(document.getElementById('megaMeasure'));
+megaRO.observe(document.getElementById('megaM'));
+megaRO.observe(document.documentElement);
 
 /* ================= nav + reveal ================= */
 const nav = document.getElementById('nav');
