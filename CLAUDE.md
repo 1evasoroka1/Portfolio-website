@@ -26,6 +26,7 @@
 - Margins: **50px** on the sides and top (`--m`), **30px** between blocks (`--g`). Header 50px from the top; titles start 30px under it (`--pad-top` 118px); content ends 84px above the bottom (`--pad-bottom`).
 - Section titles: Unbounded ExtraBold, uppercase, **120px**, exactly **centred** on every page, between two thin lines (grid `1fr auto 1fr`).
 - Font sizes (from her Figma): body text 24px, small text 20px, tags 18px, project name 44px.
+- **All cards (How I work, Services, Terms): title Unbounded 800, 32px; text Manrope, 24px (at 1920, scaled down with the window).** Her rule (Nov 2026). Phones keep the compact sizes.
 - Style: the v1 look (centred titles with lines, tilted pill badges, burgundy cards, beige and light sections, grain texture) on the Figma grid. Colours: burgundy `#5E0B16`, beige `#EBDCC6`.
 - Logo "Yeva Soroka / web design" stays in English in both languages.
 - **No sideways overflow on phones**: grids use `minmax(0, 1fr)` and step/service titles shrink with `4vw`, because a long Russian word (Предложение, Многостраничный) used to make the page wider than a 334px screen and the phone panned it sideways. Test widths 320, 334, 360, 375, 390 (an iframe of that width works) after changing phone text.
@@ -56,9 +57,9 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 - **Number badges** ("01", "02", "03"): Unbounded, beige 2px outline pill, tilted −8°.
 
 **Cards and blocks:**
-- **How I work:** solid burgundy cards, big beige Unbounded number, step title in the same font and size as the service names (Unbounded 800, 32px at 1920, normal case), 20px text. Spotlight on hover (the card under the mouse is bright and slightly bigger, the others dim). On phones it follows the scroll instead.
+- **How I work:** solid burgundy cards, big beige Unbounded number, step title in the same font and size as the service names (Unbounded 800, 32px at 1920, normal case), 24px text. Spotlight on hover (the card under the mouse is bright and slightly bigger, the others dim). On phones it follows the scroll instead.
 - **Services:** cream cards with a soft burgundy shadow and a ✦ star icon; the middle "Multi-page website" card is the burgundy "featured" card. Big Unbounded price at the bottom.
-- **Terms:** dark cards with a 1px beige outline (35% opacity) and a faint dark fill; one big Unbounded heading and text.
+- **Terms:** four full-width numbered rows with thin beige lines between them (no cards, her choice "option 1", Nov 2026): number 01–04 left, title in the middle (32px), text right (24px). On phones the number and title share one line and the text sits under them.
 - **About:** the photo with a soft shadow and a burgundy pill tag "hi, I'm Yeva" tilted −4°, overlapping the photo corner. Chips are pills: the first one filled burgundy, the others outlined.
 - **Contact:** photo in a circle with a 4px beige border and a deep shadow. QR codes sit on beige rounded squares, exactly as wide as their buttons.
 
