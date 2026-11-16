@@ -3,8 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Yeva Soroka · Web Designer Portfolio</title>
 <meta name="description" content="Yeva Soroka, web designer. Landing pages, multi-page websites, presentations and reels editing for small businesses and experts.">
+<link rel="preload" href="fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
   /* Fonts are stored in the fonts/ folder (self-hosted, nothing is loaded from Google).
      Unbounded (headings) and Manrope (text), variable fonts, with Latin (EN, DE) and Cyrillic (RU, UK) letters. */
@@ -770,8 +776,10 @@ document.getElementById('langs').innerHTML = LANGS.map(l => `<button data-lang="
 document.getElementById('langs').addEventListener('click', e => { if (e.target.dataset.lang) setLang(e.target.dataset.lang); });
 
 /* "PORTFOLIO" always fills the width between the margins, whatever the language or font */
+let megaFitting = false;
 function fitMega() {
   const el = document.getElementById('mega');
+  megaFitting = true;
   el.style.fontSize = '100px';
   el.style.marginLeft = '';
   const mpx = parseFloat(getComputedStyle(el).marginLeft) || 30;
@@ -780,8 +788,14 @@ function fitMega() {
   const fs = target / (k - 0.114);                // 0.057em side bearing on each end
   el.style.fontSize = fs + 'px';
   el.style.marginLeft = (mpx - 0.057 * fs) + 'px';
+  requestAnimationFrame(() => { megaFitting = false; });
 }
 addEventListener('resize', fitMega);
+addEventListener('orientationchange', fitMega);
+/* the word changes width when the real font replaces the fallback (slow network, Cyrillic file loads late),
+   so fit it again whenever its own width changes, and when any font finishes loading */
+new ResizeObserver(() => { if (!megaFitting) fitMega(); }).observe(document.getElementById('mega'));
+document.fonts.addEventListener('loadingdone', fitMega);
 
 /* ================= nav + reveal ================= */
 const nav = document.getElementById('nav');
