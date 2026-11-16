@@ -2,6 +2,25 @@
 
 Для Евы: это файл с главными правилами и информацией о сайте. Claude читает его в начале каждой новой сессии в этой папке, поэтому правила не нужно объяснять заново.
 
+## Status: read this first (Nov 2026)
+**Для Евы:** сайт готов и опубликован. Ниже самое важное.
+- **Live site:** https://soroka-webdesign.vercel.app (hosted on Vercel, auto-deploys from GitHub `main`).
+- **Repo:** `git@github.com:1evasoroka1/Portfolio-website.git`. Workflow: edit here, test locally, **commit and push only after she says yes**; Vercel redeploys in 1 to 2 minutes. She signs in herself, Claude never types passwords or tokens.
+- **Files:** `index.html` (the whole site), `imprint.html`, `privacy.html`, `img/` (WebP images, QR codes, `og-image.jpg`), `icons/` + `favicon.ico`, `fonts/` (self-hosted), `robots.txt`, `sitemap.xml`. `originals/` holds the untouched PNG/JPG sources (not needed on the server). v1 and v2 stay untouched.
+- **Languages:** EN (default) and RU. Static meta tags and share preview are English only (crawlers do not run JS); the browser tab title and description switch with the language.
+- **Phones:** page frame **375×812**, every section min-height 812px, 16px side margins, compact layouts. Her rule: she looks at the phone version a lot, so re-check it after every change (EN and RU, widths 320 to 430).
+- **Key decisions she made:** v3 look (burgundy/beige, Unbounded + Manrope); Terms as numbered rows; card titles 32px and text 24px; favicon = beige circle, burgundy "YS"; no Cloudinary; no analytics or cookies (so no cookie banner); hosting on Vercel.
+
+### What changed recently (newest first)
+- Speed and PageSpeed fixes: resized WebP screenshots with `srcset`, preloaded hero image and fonts, "PORTFOLIO" fitted without layout shift or forced reflow.
+- Pre-deploy audit: meta tags, Open Graph and Twitter preview with a 1200×630 image, canonical, sitemap, heading order, alt/size/lazy on images, `noopener noreferrer`.
+- Favicon (YS circle, optically centred), Imprint and Privacy pages (Vercel named as host), portraits as WebP.
+- Terms redesigned (numbered rows), card font sizes unified, Russian "PORTFOLIO" overflow fixed, phone layouts reworked (375×812, no sideways overflow on narrow phones).
+
+### Still open
+- Re-run pagespeed.web.dev after each deploy and send the screenshots; check the preview on opengraph.xyz (press "Scrape again" if it is old).
+- Optional: a separate `/ru` page for Russian search, a custom domain (then change the 4 address tags and `sitemap.xml`), GA4/Meta Pixel (needs a cookie banner and an updated Privacy page).
+
 ## Who and what
 - Owner: **Yeva Soroka**, web designer (Instagram @soroka.webdesign, WhatsApp +41 76 309 95 53, Switzerland). She writes in **Russian** (sometimes English): answer in the language she uses.
 - Bilingual **EN / RU** one-page portfolio. It will be linked from her Instagram and offers paid services (landing pages, multi-page websites, reels editing, ad creatives, presentations).
@@ -17,7 +36,7 @@
 - Single file `index.html` (HTML + CSS + JS) plus `img/` and `fonts/`. No build step. Two small legal pages, `imprint.html` and `privacy.html` (EN/RU switch, same fonts, linked from the footer).
 - **Favicon** (her choice, Nov 2026): round, beige circle with a burgundy border and burgundy "YS" (Unbounded 800, letters 68% of the circle width, her choice of three sizes, nudged 2.4% left and 0.65% down because the S is heavier than the Y and looked off-centre), solid so it shows on light and dark tabs. Files: `favicon.ico` (16/32/48) at the root and `icons/` (32, 192, 512 PNG and a 180 `apple-touch-icon` with a burgundy background). Linked in `index.html`, `imprint.html`, `privacy.html`. Redraw all sizes if the look changes (Safari uses the PNG and apple-touch icon, not SVG).
 - **Speed (PageSpeed, Nov 2026):** project screenshots and reels are WebP in two sizes with `srcset` (`name-720.webp` and `name-1440.webp`, phones `-480/-390/-360`), the JPG originals are in `originals/`. Hero image and Latin fonts are preloaded; Cyrillic fonts are preloaded only for Russian visitors (inline script in the head, which also sets `lang=ru` early). New screenshot: `cwebp -q 78 -resize W 0 in.jpg -o name-W.webp` for two widths.
-- **Photos:** the two portraits are WebP (`img/yeva-cover.webp`, `img/yeva-about.webp`, about 150 to 230 KB, transparent). The original PNGs are kept in `originals/` and are not needed on the server. Use WebP (`cwebp -q 85 -alpha_q 90`) for any new portrait; project screenshots stay JPG. No Cloudinary on purpose (third party, IP goes to them, one more dependency).
+- **Photos:** the two portraits are WebP (`img/yeva-cover.webp`, `img/yeva-about.webp`, about 150 to 230 KB, transparent). The original PNGs are kept in `originals/` and are not needed on the server. Use WebP (`cwebp -q 85 -alpha_q 90`) for any new portrait; project screenshots and reels are WebP too (see Speed above). No Cloudinary on purpose (third party, IP goes to them, one more dependency).
 - Translations live in the `T` object in the script, `data-i18n="key"` on elements, `setLang()`. English defaults are also written in the HTML. Russian: `?lang=ru`. A missing key falls back to English.
 - Run: `cd "/Users/yevka/web design/portfolio-site-v3" && python3 -m http.server 8124`, open http://localhost:8124 (she uses Safari; testing is done with headless Chrome).
 - **Fonts are self-hosted** in `fonts/` (Unbounded for headings, Manrope for text; Latin and Cyrillic). Never add a Google Fonts link again (the visitor's IP would go to Google). Upload `fonts/` together with `img/`.
@@ -83,7 +102,7 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 2. **Projects**, in order of size: **01 The LightUp Agency** (landing page; text left, mockups right), **02 Reels & creatives**, **03 Olha's Beauty** (multi-page website; mockups left, text right).
    - Text block: tilted number badge, name in capitals, type subtitle, Client / The idea / What I did, tags, "Visit website" button. Text and pictures sit close together.
    - Reels page: title "REELS & CREATIVES" at 104px, centred, with lines, badge "02" at the left, one-line description, four big tilted phones with caption pills.
-3. **How I work**: 2 rows of 3 burgundy cards, no timeline, spotlight hover animation kept.
+3. **How I work**: 2 rows of 3 burgundy cards, no timeline, spotlight hover animation kept (on phones: 2 columns, no dimming).
 4. **Services**, then 5. **Terms** (Services comes first; the menu has the same order).
 6. **About**: photo 3:4 (head not cut), two paragraphs, straight left edge and uneven right edge.
 7. **Contact**: centred heading "Let's work together", left text with WhatsApp and Instagram buttons (QR codes exactly as wide as the buttons), big circle photo close to the text on the right. No frame around the text.
@@ -96,7 +115,7 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 - Russian copy must sound **natural**; she dictates corrections, so apply them exactly and keep EN and RU matching in meaning.
 - Business facts on the site: landing pages from $300, multi-page websites from $500, **reels editing from $15** (complex reels with graphics from $30), ad creatives and presentations on request. The hero says "businesses and experts" (not "small businesses").
 - How I work = 6 steps: Contact (her idea, a call), Offer, Structure (she writes texts only if the client needs), Moodboard (style, colours, draft of the first pages), Website, Revisions (up to 3 big rounds, then the project ends).
-- Terms = 4 cards, each with **one heading and text** (no separate subtitle): "Everything agreed" / "2–3 rounds of revisions" / "100% prepayment" (can be split into 2–3 payments for long projects) / "Changes after the project" (paid separately, depending on the task).
+- Terms = 4 numbered rows, each with **one heading and text** (no separate subtitle): "Everything agreed" / "2–3 rounds of revisions" / "100% prepayment" (can be split into 2–3 payments for long projects) / "Changes after the project" (paid separately, depending on the task).
 - Olha's Beauty "What I did": AI content generation (images and video, mostly re-made existing visuals); the tag says "AI content generation".
 
 ## Checklist before saying "done"
@@ -106,9 +125,9 @@ She said about v1: "I loved it." The look comes from v1 and only the grid, margi
 
 ## Pre-deploy audit (done Nov 2026)
 - Head has: title, description (EN/RU switch with the language), canonical, Open Graph and Twitter tags, theme colour, favicon set, GA4 and Meta Pixel comment stubs. The site address in canonical, og:url, og:image and twitter:image is `https://soroka-webdesign.vercel.app` (change all four if a custom domain is connected). Share image: `img/og-image.jpg` (1200×630).
-- Images have alt, width and height (global `img { height: auto }` keeps proportions; the contact portrait needs `width: auto`), below-the-fold ones are lazy, the hero portrait is `fetchpriority="high"`. Step titles in How I work are `h3` (heading order h1 > h2 > h3). All `target="_blank"` links have `rel="noopener noreferrer"`. `robots.txt` allows everything (no sitemap yet, needs the domain).
+- Images have alt, width and height (global `img { height: auto }` keeps proportions; the contact portrait needs `width: auto`), below-the-fold ones are lazy, the hero portrait is `fetchpriority="high"`. Step titles in How I work are `h3` (heading order h1 > h2 > h3). All `target="_blank"` links have `rel="noopener noreferrer"`. `robots.txt` allows everything and points to `sitemap.xml` (three pages).
 - If GA4 or Meta Pixel are ever added: cookies appear, so a consent banner and an updated Privacy page are needed.
 
 ## Open items
 - **Imprint and Privacy**: done (`imprint.html`, `privacy.html`, footer links). Address on them: Yeva Soroka, Webermühle 33, 5432 Neuenhof, Switzerland (postcode 5432 confirmed by her), email 1evasoroka1@gmail.com. No UID/VAT number is stated (she has not given one). Hosting is **Vercel** (named in section 3 of the privacy page, with a note that data may be processed in the USA). The pages are generated from a small script; edit the HTML files directly from now on. No cookie banner is needed (no cookies, no analytics, fonts are self-hosted).
-- **GitHub**: v3 is linked to `git@github.com:1evasoroka1/Portfolio-website.git` (branch `main`, first commit "Initial" pushed). Never push without her go-ahead; she signs in herself (no passwords or tokens are entered by Claude).
+- **GitHub**: v3 is linked to `git@github.com:1evasoroka1/Portfolio-website.git` (branch `main`, everything pushed). Never push without her go-ahead; she signs in herself (no passwords or tokens are entered by Claude).
