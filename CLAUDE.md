@@ -4,7 +4,6 @@
 
 ## Status: read this first (Nov 2026)
 **Для Евы:** сайт готов и опубликован. Ниже самое важное.
-- **Not pushed yet (Nov 17 2026):** phone version: sections have no fixed 812px height any more (only the hero does), and the slide-over also works on phones (CSS only: the hero is `position: sticky`, the first project scrolls up over it; no JS). Push only after she says yes.
 - **Live site:** https://soroka-webdesign.vercel.app (hosted on Vercel, auto-deploys from GitHub `main`).
 - **Repo:** `git@github.com:1evasoroka1/Portfolio-website.git`. Workflow: edit here, test locally, **commit and push only after she says yes**; Vercel redeploys in 1 to 2 minutes. She signs in herself, Claude never types passwords or tokens.
 - **Files:** `index.html` (the whole site), `imprint.html`, `privacy.html`, `img/` (WebP images, QR codes, `og-image.jpg`), `icons/` + `favicon.ico`, `fonts/` (self-hosted), `robots.txt`, `sitemap.xml`. `originals/` holds the untouched PNG/JPG sources (not needed on the server). v1 and v2 stay untouched.
