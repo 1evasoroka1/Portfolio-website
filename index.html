@@ -239,9 +239,9 @@
   .project dt { font-family: var(--f-display); font-weight: var(--w-display); font-size: var(--t-body); line-height: 1.25; margin-bottom: calc(.2 * var(--u)); }
   .project dd { font-weight: 600; font-size: var(--t-body); line-height: 1.4; opacity: .92; }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tags span { font-size: clamp(calc(13px * var(--fk)), calc(.9375 * var(--u)), 18px); font-weight: 600; padding: .38em 1em; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--beige) 55%, transparent); }
+  .tags span { font-size: clamp(calc(13px * var(--fk)), calc(.9375 * var(--u)), 18px); font-weight: 600; padding: .38em 1em; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--beige) 28%, transparent); }   /* soft outline, so the tags do not pull the eye away from the button */
   /* "Visit website": beige by default, transparent only while the cursor is on the button itself */
-  .project .visit { background: var(--beige); color: var(--burgundy); transition: background .25s, color .25s, transform .2s; }
+  .project .visit { background: var(--beige); color: var(--burgundy); transition: background .25s, color .25s, transform .2s; font-size: clamp(calc(17px * var(--fk)), calc(1.3 * var(--u)), 25px); padding: .8em 1.6em; }   /* bigger, so it is noticed at once */
   .project .visit:hover { background: transparent; color: var(--beige); }
 
   /* screen mockups: placed and tilted as in Figma (sizes in % of the mockup width) */
@@ -338,6 +338,13 @@
   .term .big { font-family: var(--f-display); font-weight: var(--w-display); color: var(--accent); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; display: block; }   /* same as the service and step titles */
   .term p { font-size: var(--t-body); line-height: 1.4; opacity: .9; max-width: 720px; }
   @media (max-width: 1000px) { .term { grid-template-columns: auto minmax(0, 1fr); row-gap: 6px; } .term p { grid-column: 1 / -1; } .term .n { margin-right: 6px; } }
+  /* scroll highlight: the row you have scrolled to becomes a beige plate (the text stays on the same spot, the plate reaches a little beyond it) */
+  .term { padding-inline: calc(1.5 * var(--u)); margin-inline: calc(-1.5 * var(--u)); border-radius: calc(1.2 * var(--u)); transition: background .45s, color .45s, border-color .45s; }
+  .term.reveal { transition: opacity .8s ease, transform .8s ease, background .45s, border-color .45s; }   /* keeps the reveal and adds the plate fade */
+  .term .n, .term .big, .term p { transition: color .45s, opacity .45s; }
+  .term.active { background: var(--beige); border-top-color: transparent; }
+  .term.active + .term { border-top-color: transparent; }
+  .term.active .n, .term.active .big, .term.active p { color: var(--burgundy); opacity: 1; }
 
   /* ---------- 5. services ---------- */
   .services { flex: 1 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
@@ -421,6 +428,7 @@
     .project dd { line-height: 1.35; }
     .tags { gap: 6px; }
     .tags span { font-size: 12px; padding: .3em .85em; }
+    .project .visit { font-size: 17px; padding: .8em 1.6em; }
     /* how I work: 2 columns of compact cards, all visible at once (no spotlight dimming) */
     .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 10px; }   /* minmax(0) so a long word can never push the page wider than the screen */
     .step { min-width: 0; }
@@ -439,7 +447,7 @@
     .service p { grid-row: 2; grid-column: 1 / -1; font-size: 13px; line-height: 1.4; margin: 4px 0 0; }
     .service .note { font-size: 12px; margin-top: 2px; }
     /* terms */
-    .term { grid-template-columns: 46px minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 10px 0; }
+    .term { grid-template-columns: 46px minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 10px 12px; margin-inline: -12px; border-radius: 16px; }
     .term .n { font-size: 24px; margin: 0; }
     .term .big { font-size: clamp(14px, 4.4vw, 17px); overflow-wrap: anywhere; }
     .term p { font-size: 14px; line-height: 1.45; grid-column: 1 / -1; }
@@ -902,6 +910,20 @@ hoverDevice.addEventListener('change', initProcess);
 addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
+/* ================= terms: the row at the middle of the screen turns into a beige plate ================= */
+const termRows = [...document.querySelectorAll('#terms .term')];
+let termOn = -1;
+function updateTerms() {
+  if (!geo.terms) return;
+  const line = scrollY + innerHeight * 0.5;   // row centres come from the cache below, so scrolling never forces a layout
+  let best = 0;
+  geo.terms.forEach((c, i) => { if (Math.abs(c - line) < Math.abs(geo.terms[best] - line)) best = i; });
+  if (best === termOn) return;
+  termOn = best;
+  termRows.forEach((r, i) => r.classList.toggle('active', i === best));
+}
+addEventListener('scroll', updateTerms, { passive: true });
+
 /* ================= hero + first project: slide-over on scroll ================= */
 const stack = document.getElementById('stack');
 const slideOn = matchMedia('(min-width: 1201px) and (prefers-reduced-motion: no-preference)');
@@ -931,6 +953,7 @@ const geo = {};
 new ResizeObserver(() => {
   geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
   geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
+  geo.terms = termRows.map(r => { const b = r.getBoundingClientRect(); return b.top + scrollY + b.height / 2; }); updateTerms();
   slideOver(); if (!hoverDevice.matches) updateProcess();
 }).observe(document.body);
 

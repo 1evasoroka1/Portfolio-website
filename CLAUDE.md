@@ -12,6 +12,7 @@
 - **Key decisions she made:** v3 look (burgundy/beige, Unbounded + Manrope); Terms as numbered rows; card titles 32px and text 24px; favicon = beige circle, burgundy "YS"; no Cloudinary; no analytics or cookies (so no cookie banner); hosting on Vercel.
 
 ### What changed recently (newest first)
+- Teacher's edits (Nov 2026, not pushed until she says yes): "Visit website" button bigger; project tag outlines more transparent (28%); Terms rows turn into a beige plate (site beige, not white) one by one while scrolling (the row nearest the middle of the screen is `.active`, JS `updateTerms`, positions from the ResizeObserver cache; the phone rules at 375×812 and the one-screen height are unchanged). Phones: sections are as tall as their content (only the hero is 812px) and the slide-over works on phones too (sticky hero, CSS only).
 - Mobile PageSpeed round 2: extra small image sizes (`-480` screenshots and reels, `-240` phone screenshots, `yeva-cover-480/-720`, `yeva-about-480` via `image-set`), contact circle no longer loads the full portrait; scroll effects read positions from a ResizeObserver cache (no forced reflow); `<main>` landmark; phone "Projects" h2 is visually hidden instead of `display:none` (heading order).
 - Speed and PageSpeed fixes: resized WebP screenshots with `srcset`, preloaded hero image and fonts, "PORTFOLIO" fitted without layout shift or forced reflow.
 - Pre-deploy audit: meta tags, Open Graph and Twitter preview with a 1200×630 image, canonical, sitemap, heading order, alt/size/lazy on images, `noopener noreferrer`.
