@@ -338,13 +338,6 @@
   .term .big { font-family: var(--f-display); font-weight: var(--w-display); color: var(--accent); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; display: block; }   /* same as the service and step titles */
   .term p { font-size: var(--t-body); line-height: 1.4; opacity: .9; max-width: 720px; }
   @media (max-width: 1000px) { .term { grid-template-columns: auto minmax(0, 1fr); row-gap: 6px; } .term p { grid-column: 1 / -1; } .term .n { margin-right: 6px; } }
-  /* scroll highlight: the row you have scrolled to becomes a beige plate (the text stays on the same spot, the plate reaches a little beyond it) */
-  .term { padding-inline: calc(1.5 * var(--u)); margin-inline: calc(-1.5 * var(--u)); border-radius: calc(1.2 * var(--u)); transition: background .45s, color .45s, border-color .45s; }
-  .term.reveal { transition: opacity .8s ease, transform .8s ease, background .45s, border-color .45s; }   /* keeps the reveal and adds the plate fade */
-  .term .n, .term .big, .term p { transition: color .45s, opacity .45s; }
-  .term.active { background: var(--beige); border-top-color: transparent; }
-  .term.active + .term { border-top-color: transparent; }
-  .term.active .n, .term.active .big, .term.active p { color: var(--burgundy); opacity: 1; }
 
   /* ---------- 5. services ---------- */
   .services { flex: 1 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
@@ -407,7 +400,9 @@
   @media (max-width: 760px) {
     /* page frame 375×812: every section is at least one 812px screen */
     .hero { min-height: 812px; }
-    section { min-height: 0; padding-top: 68px; padding-bottom: 24px; }   /* no empty space: a section is as tall as its content */
+    html { scroll-padding-top: 24px; }   /* a jump to a section stops below the logo bar */
+    section { min-height: 0; padding-top: 48px; padding-bottom: 48px; }   /* the same space above and below, so nothing looks cut off and nothing is far apart */
+    #contact { padding-bottom: 48px; }
     .section-head { margin-bottom: 14px; }
     /* projects: smaller mockups, tighter text */
     #projects .section-head, #project-3 .section-head { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); }   /* no "PROJECTS" title on phones, so "Visit website" fits */
@@ -447,7 +442,7 @@
     .service p { grid-row: 2; grid-column: 1 / -1; font-size: 13px; line-height: 1.4; margin: 4px 0 0; }
     .service .note { font-size: 12px; margin-top: 2px; }
     /* terms */
-    .term { grid-template-columns: 46px minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 10px 12px; margin-inline: -12px; border-radius: 16px; }
+    .term { grid-template-columns: 46px minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 10px 0; }
     .term .n { font-size: 24px; margin: 0; }
     .term .big { font-size: clamp(14px, 4.4vw, 17px); overflow-wrap: anywhere; }
     .term p { font-size: 14px; line-height: 1.45; grid-column: 1 / -1; }
@@ -910,20 +905,6 @@ hoverDevice.addEventListener('change', initProcess);
 addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
-/* ================= terms: the row at the middle of the screen turns into a beige plate ================= */
-const termRows = [...document.querySelectorAll('#terms .term')];
-let termOn = -1;
-function updateTerms() {
-  if (!geo.terms) return;
-  const line = scrollY + innerHeight * 0.5;   // row centres come from the cache below, so scrolling never forces a layout
-  let best = 0;
-  geo.terms.forEach((c, i) => { if (Math.abs(c - line) < Math.abs(geo.terms[best] - line)) best = i; });
-  if (best === termOn) return;
-  termOn = best;
-  termRows.forEach((r, i) => r.classList.toggle('active', i === best));
-}
-addEventListener('scroll', updateTerms, { passive: true });
-
 /* ================= hero + first project: slide-over on scroll ================= */
 const stack = document.getElementById('stack');
 const slideOn = matchMedia('(min-width: 1201px) and (prefers-reduced-motion: no-preference)');
@@ -953,7 +934,6 @@ const geo = {};
 new ResizeObserver(() => {
   geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
   geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
-  geo.terms = termRows.map(r => { const b = r.getBoundingClientRect(); return b.top + scrollY + b.height / 2; }); updateTerms();
   slideOver(); if (!hoverDevice.matches) updateProcess();
 }).observe(document.body);
 
