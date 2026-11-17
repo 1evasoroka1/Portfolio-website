@@ -399,8 +399,8 @@
   /* ---------- phones: every section fits one 375×812 screen ---------- */
   @media (max-width: 760px) {
     /* page frame 375×812: every section is at least one 812px screen */
-    section, .hero { min-height: 812px; }
-    section { padding-top: 68px; padding-bottom: 24px; }
+    .hero { min-height: 812px; }
+    section { min-height: 0; padding-top: 68px; padding-bottom: 24px; }   /* no empty space: a section is as tall as its content */
     .section-head { margin-bottom: 14px; }
     /* projects: smaller mockups, tighter text */
     #projects .section-head, #project-3 .section-head { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); }   /* no "PROJECTS" title on phones, so "Visit website" fits */
@@ -469,6 +469,12 @@
       box-shadow: 0 -24px 70px rgba(0,0,0,.4);
       transform: translate3d(0, calc(var(--s, 1) * 100%), 0); will-change: transform;
     }
+  }
+
+  /* phones: same slide-over, but with no JS and no fixed height: the hero stays stuck while the first project (as tall as its content) scrolls up over it */
+  @media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+    .stack .hero { position: sticky; top: min(0px, calc(100svh - 812px)); z-index: 1; min-height: max(100svh, 812px); }   /* a screen shorter than 812px shows the bottom of the hero while it is stuck */
+    #projects { z-index: 2; border-radius: 28px 28px 0 0; box-shadow: 0 -18px 50px rgba(0,0,0,.4); }
   }
 
   /* star cursor: always beige, with a hairline dark edge so it stays visible on light sections */
