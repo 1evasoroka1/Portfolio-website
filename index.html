@@ -372,11 +372,10 @@
   .service.featured { background: var(--burgundy); color: var(--beige); }
   /* a card grows a little (the text with it), colours stay as they are: a mouse triggers it with hover; on touch devices the script marks the card nearest to the middle of the screen as .active while you scroll */
   .service.reveal { transition: opacity .8s ease, transform .8s ease, scale .25s ease-out; }
-  .service { scale: calc(1 + .03 * var(--p, 0)); }   /* --p (0 to 1) is set by the script from how close the card is to the middle of the screen, so it grows gradually while you scroll */
-  .service.active { scale: 1.04; }   /* fallback for old browsers: on/off */
+  .service.active { scale: 1.05; }   /* phones and touch devices: one card after another, the script sets .active */
   @media (hover: hover) and (min-width: 761px) { .service:hover { scale: 1.03; } }
-  @media (max-width: 760px), (hover: none) {   /* the size follows the finger directly: no transition chasing it, and the card gets its own layer, so scrolling stays smooth */
-    .service.reveal { transition: opacity .8s ease, transform .8s ease; }
+  @media (max-width: 760px), (hover: none) {   /* the card gets its own layer, so scrolling stays smooth */
+    .service.reveal { transition: opacity .8s ease, transform .8s ease, scale .8s ease; }   /* the card moves forward softly (in time, not tied to the finger) */
     .service { will-change: scale; }
   }
   @media (max-width: 1060px) { .services { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; } .services .service, .services .service:nth-child(n+4) { grid-column: span 1; } .services .service:last-child { grid-column: 1 / -1; } }
@@ -1005,51 +1004,34 @@ addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
 /* ================= terms and services: on touch devices the row/card nearest the middle of the screen is lit (.active) while you scroll ================= */
-function litOnScroll(sec, items, gradual, after) {   // gradual = the effect grows with the scroll (Services); otherwise one item at a time is lit (Terms). after = another instance that must finish first
-  let top = 0, h = 0, centers = [], on = -2;
-  const ps = items.map(() => 0);
-  const smooth = gradual && CSS.supports('color', 'color-mix(in srgb, red calc(50% * 1), blue)');   // gradual version; old browsers get the on/off version
+function litOnScroll(sec, items, slot, after) {   // slot = how many px of scrolling each item stays lit (the same for every item). after = another instance that must finish first
+  let centers = [], startY = 0, on = -2;
   return {
     measure() {   // positions are cached, so scrolling never forces a layout
-      top = sec.getBoundingClientRect().top + scrollY; h = sec.offsetHeight;
       centers = items.map(el => { const b = el.getBoundingClientRect(); return b.top + scrollY + b.height / 2; });
+      startY = centers[0] - innerHeight * 0.5 - slot / 2;   // the first item lights up about when it reaches the middle of the screen
+      if (after) startY = Math.max(startY, after.endY());   // never before the previous effect has finished
     },
-    lastCenter() { return centers.length ? centers[centers.length - 1] : 0; },
+    endY() { return startY + items.length * slot; },
     update() {
       if (!centers.length) return;
+      let best = -1;
       if (hoverDevice.matches && !matchMedia('(max-width: 760px)').matches) {   // a mouse on a wide screen uses the hover effect instead
-        if (on !== -3) { on = -3; ps.fill(0); items.forEach(el => { el.style.removeProperty('--p'); el.style.removeProperty('--q'); el.classList.remove('active'); }); }
-        return;
+        if (on === -3) return;
+        on = -3;
+      } else {   // phone layout or touch device: one item after another, each for the same distance of scrolling
+        const i = Math.floor((scrollY - startY) / slot);
+        best = i >= 0 && i < items.length ? i : -1;
+        if (best === on) return;
+        on = best;
       }
-      const line = scrollY + innerHeight * 0.5;   // phone layout or touch device: follow the scroll
-      if (smooth) {
-        const reach = innerHeight * 0.3;   // how far from the middle of the screen a card still reacts (wide, so the change is slow and smooth)
-        items.forEach((el, i) => {
-          let p = Math.max(0, 1 - Math.abs(centers[i] - line) / reach);
-          p = p * p * (3 - 2 * p);   // ease in and out
-          if (Math.abs(p - ps[i]) > 0.004) {
-            ps[i] = p; el.style.setProperty('--p', p.toFixed(3));
-            const q = Math.min(1, Math.max(0, (p - 0.5) / 0.25));   // the text colour follows later than the size and the plate
-            el.style.setProperty('--q', q.toFixed(3));
-          }
-        });
-        on = -4;
-        return;
-      }
-      // the plate walks through the rows one after another. It starts only when the previous effect (Services) has reached its last card (that card is in the middle of the screen), and ends when the bottom of the section is near the top third of the screen
-      const startY = after && after.lastCenter() ? after.lastCenter() - innerHeight * 0.5 : top - innerHeight * 0.85;
-      const endY = top + h - innerHeight * 0.3;
-      const p = (scrollY - startY) / (endY - startY);
-      const best = p < 0 || p > 1 ? -1 : Math.min(items.length - 1, Math.floor(p * items.length));
-      if (best === on) return;
-      on = best;
-      items.forEach((el, i) => el.classList.toggle('active', i === best));
+      items.forEach((el, k) => el.classList.toggle('active', k === best));
     }
   };
 }
-const servicesLit = litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')], true);
-const termsLit = litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')], false, servicesLit);   // Terms waits for Services
-const lit = [servicesLit, termsLit];
+const servicesLit = litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')], 150);
+const termsLit = litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')], 160, servicesLit);   // Terms waits for Services
+const lit = [servicesLit, termsLit];   // measured in this order: Terms needs the end of Services
 const updateLit = () => lit.forEach(l => l.update());
 let litFrame = 0;   // at most one update per frame, however many scroll events arrive
 addEventListener('scroll', () => { if (!litFrame) litFrame = requestAnimationFrame(() => { litFrame = 0; updateLit(); }); }, { passive: true });
