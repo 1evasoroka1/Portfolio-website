@@ -466,11 +466,14 @@
     .step .n { font-size: 28px; white-space: nowrap; }   /* the number column is a fixed 54px: the widest number (04) is about 51px */
     .step h3 { font-size: clamp(15px, 4.5vw, 18px); margin: 0; overflow-wrap: anywhere; }   /* a bit bigger than the 15px text */
     .step p { grid-column: 1 / -1; font-size: 15px; line-height: 1.4; min-height: 0; }
-    /* the finished staircase leaves as one piece (the script sets --e = how far to move it up once the last card is in place); the spacer keeps the sticky cards from piling up, and Services pulls itself back up by the same amount, so the page length does not change */
-    .steps::after { content: ""; height: 626px; }
-    #services { margin-top: -640px; }
-    .step { transform: translateY(calc(-1 * var(--e, 0px))); }
-    .steps.measuring .step { position: relative; top: 0; transform: none; }
+    /* the finished staircase leaves as one piece with no script: each card gets a bottom margin that is 56px smaller than the card above it (and the next card pulls itself back by the same amount, so the page length does not change). When the section ends, every card is pushed up by the same amount and the steps keep their 56px distance. The cards get the same height (--stairH, measured once by the script on load and on resize, never while scrolling), otherwise the steps would drift apart. */
+    .step .card { min-height: var(--stairH, 0px); }
+    .step:nth-child(1) { margin-bottom: 280px; }
+    .step:nth-child(2) { margin-top: -280px; margin-bottom: 224px; }
+    .step:nth-child(3) { margin-top: -224px; margin-bottom: 168px; }
+    .step:nth-child(4) { margin-top: -168px; margin-bottom: 112px; }
+    .step:nth-child(5) { margin-top: -112px; margin-bottom: 56px; }
+    .step:nth-child(6) { margin-top: -56px; }
     /* services: rows, star + name, price under the name, text under it */
     .services { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 8px; }
     .service { min-width: 0; display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: baseline; column-gap: 8px; padding: 14px 16px; border-radius: 18px; }
@@ -1002,7 +1005,7 @@ addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
 /* ================= terms and services: on touch devices the row/card nearest the middle of the screen is lit (.active) while you scroll ================= */
-function litOnScroll(sec, items, gradual) {   // gradual = the effect grows with the scroll (Services); otherwise the nearest item is simply lit (Terms)
+function litOnScroll(sec, items, gradual, after) {   // gradual = the effect grows with the scroll (Services); otherwise one item at a time is lit (Terms). after = another instance that must finish first
   let top = 0, h = 0, centers = [], on = -2;
   const ps = items.map(() => 0);
   const smooth = gradual && CSS.supports('color', 'color-mix(in srgb, red calc(50% * 1), blue)');   // gradual version; old browsers get the on/off version
@@ -1011,6 +1014,7 @@ function litOnScroll(sec, items, gradual) {   // gradual = the effect grows with
       top = sec.getBoundingClientRect().top + scrollY; h = sec.offsetHeight;
       centers = items.map(el => { const b = el.getBoundingClientRect(); return b.top + scrollY + b.height / 2; });
     },
+    lastCenter() { return centers.length ? centers[centers.length - 1] : 0; },
     update() {
       if (!centers.length) return;
       if (hoverDevice.matches && !matchMedia('(max-width: 760px)').matches) {   // a mouse on a wide screen uses the hover effect instead
@@ -1032,8 +1036,10 @@ function litOnScroll(sec, items, gradual) {   // gradual = the effect grows with
         on = -4;
         return;
       }
-      // the plate walks through the rows while the section crosses the screen: p = 0 when the section starts to enter, 1 when its bottom is near the top third (about 250px of scrolling per row, so the white stays on a row long enough)
-      const p = (innerHeight * 0.85 - (top - scrollY)) / (h + innerHeight * 0.55);
+      // the plate walks through the rows one after another. It starts only when the previous effect (Services) has reached its last card (that card is in the middle of the screen), and ends when the bottom of the section is near the top third of the screen
+      const startY = after && after.lastCenter() ? after.lastCenter() - innerHeight * 0.5 : top - innerHeight * 0.85;
+      const endY = top + h - innerHeight * 0.3;
+      const p = (scrollY - startY) / (endY - startY);
       const best = p < 0 || p > 1 ? -1 : Math.min(items.length - 1, Math.floor(p * items.length));
       if (best === on) return;
       on = best;
@@ -1041,38 +1047,24 @@ function litOnScroll(sec, items, gradual) {   // gradual = the effect grows with
     }
   };
 }
-const lit = [
-  litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')], false),
-  litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')], true)
-];
+const servicesLit = litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')], true);
+const termsLit = litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')], false, servicesLit);   // Terms waits for Services
+const lit = [servicesLit, termsLit];
 const updateLit = () => lit.forEach(l => l.update());
 let litFrame = 0;   // at most one update per frame, however many scroll events arrive
 addEventListener('scroll', () => { if (!litFrame) litFrame = requestAnimationFrame(() => { litFrame = 0; updateLit(); }); }, { passive: true });
 hoverDevice.addEventListener('change', updateLit);
 
-/* ================= how I work (phones): the finished staircase scrolls away as one piece ================= */
+/* ================= how I work (phones): all cards of the staircase get the same height (measured here, never on scroll) ================= */
 const stairsEl = document.querySelector('#process .steps');
-const stairCards = [...stairsEl.querySelectorAll('.step')];
 const phoneMq = matchMedia('(max-width: 760px)');
-let stairDone = 0;   // page scroll position at which the last card has reached its place
-function measureStairs() {
-  stairDone = 0;
+function equalizeStairs() {
+  stairsEl.style.removeProperty('--stairH');
   if (!phoneMq.matches) return;
-  stairsEl.classList.add('measuring');   // natural positions, without the sticky offsets
-  const last = stairCards[stairCards.length - 1];
-  const natural = last.getBoundingClientRect().top + scrollY;
-  stairsEl.classList.remove('measuring');
-  stairDone = natural - parseFloat(getComputedStyle(last).top);
+  stairsEl.style.setProperty('--stairH', '0px');
+  const h = Math.max(...[...stairsEl.querySelectorAll('.card')].map(c => c.getBoundingClientRect().height));
+  stairsEl.style.setProperty('--stairH', Math.ceil(h) + 'px');
 }
-let stairE = -1;
-function updateStairs() {
-  const e = phoneMq.matches && stairDone ? Math.max(0, scrollY - stairDone) : 0;
-  if (e === stairE) return;
-  stairE = e;
-  stairsEl.style.setProperty('--e', e + 'px');
-}
-addEventListener('scroll', updateStairs, { passive: true });
-phoneMq.addEventListener('change', () => { measureStairs(); updateStairs(); });
 
 /* ================= hero + first project: slide-over on scroll ================= */
 const stack = document.getElementById('stack');
@@ -1104,7 +1096,7 @@ new ResizeObserver(() => {
   geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
   geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
   lit.forEach(l => l.measure()); updateLit();
-  measureStairs(); updateStairs();
+  equalizeStairs();
   slideOver(); if (!hoverDevice.matches) updateProcess();
 }).observe(document.body);
 
