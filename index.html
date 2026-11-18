@@ -338,6 +338,20 @@
   .term .big { font-family: var(--f-display); font-weight: var(--w-display); color: var(--accent); font-size: clamp(calc(19px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.2; display: block; }   /* same as the service and step titles */
   .term p { font-size: var(--t-body); line-height: 1.4; opacity: .9; max-width: 720px; }
   @media (max-width: 1000px) { .term { grid-template-columns: auto minmax(0, 1fr); row-gap: 6px; } .term p { grid-column: 1 / -1; } .term .n { margin-right: 6px; } }
+  /* the plate: a row grows a little and gets a beige plate with burgundy text. A mouse triggers it with hover; on touch devices (no cursor) the script marks the row
+     nearest to the middle of the screen as .active while you scroll. The text stays on its spot, the plate reaches a little beyond it.
+     Uses the separate "scale" property, so it does not fight with the fade-in (.reveal uses transform) */
+  .term.reveal { transition: opacity .8s ease, transform .8s ease, scale .35s ease, background .35s ease, border-color .35s ease; }
+  .term .n, .term .big, .term p { transition: color .35s ease, opacity .35s ease; }
+  .term { padding-inline: calc(1.5 * var(--u)); margin-inline: calc(-1.5 * var(--u)); }
+  .term.active { scale: 1.03; background: var(--beige); border-top-color: transparent; border-radius: calc(1.2 * var(--u)); }   /* the corners are round only while lit, so the thin lines between rows stay straight */
+  .term.active + .term { border-top-color: transparent; }
+  .term.active .n, .term.active .big, .term.active p { color: var(--burgundy); opacity: 1; }
+  @media (hover: hover) {
+    .term:hover { scale: 1.03; background: var(--beige); border-top-color: transparent; border-radius: calc(1.2 * var(--u)); }
+    .term:hover + .term { border-top-color: transparent; }
+    .term:hover .n, .term:hover .big, .term:hover p { color: var(--burgundy); opacity: 1; }
+  }
 
   /* ---------- 5. services ---------- */
   .services { flex: 1 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; gap: var(--g); }
@@ -350,6 +364,10 @@
   .service .price { font-family: var(--f-display); font-weight: var(--w-display); font-size: clamp(calc(24px * var(--fk)), calc(2.08 * var(--u)), 40px); line-height: 1; }
   .service .note { display: block; margin-top: 8px; font-size: clamp(calc(13px * var(--fk)), calc(.83 * var(--u)), 16px); line-height: 1.45; opacity: .75; }
   .service.featured { background: var(--burgundy); color: var(--beige); }
+  /* a card grows a little (the text with it), colours stay as they are: a mouse triggers it with hover; on touch devices the script marks the card nearest to the middle of the screen as .active while you scroll */
+  .service.reveal { transition: opacity .8s ease, transform .8s ease, scale .35s ease; }
+  .service.active { scale: 1.04; }
+  @media (hover: hover) { .service:hover { scale: 1.03; } }
   @media (max-width: 1060px) { .services { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; } .services .service, .services .service:nth-child(n+4) { grid-column: span 1; } .services .service:last-child { grid-column: 1 / -1; } }
   @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
 
@@ -453,6 +471,11 @@
     .chips { gap: 6px; }
     .chips span { font-size: 13px; padding: .35em .9em; }
     .about .speaks { font-size: 14px; margin-top: 12px; }
+  }
+
+  @media (max-width: 760px) {   /* phones: keep air between the text and the edge of the plate */
+    .term { padding: 10px 8px; margin-inline: -8px; }
+    .term.active, .term:hover { border-radius: 16px; }
   }
 
   footer { background: var(--ink); color: color-mix(in srgb, var(--beige) 60%, transparent); text-align: center; font-size: 14px; padding: var(--m); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; }
@@ -905,6 +928,38 @@ hoverDevice.addEventListener('change', initProcess);
 addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
+/* ================= terms and services: on touch devices the row/card nearest the middle of the screen is lit (.active) while you scroll ================= */
+function litOnScroll(sec, items) {
+  let top = 0, h = 0, centers = [], on = -2;
+  return {
+    measure() {   // positions are cached, so scrolling never forces a layout
+      top = sec.getBoundingClientRect().top + scrollY; h = sec.offsetHeight;
+      centers = items.map(el => { const b = el.getBoundingClientRect(); return b.top + scrollY + b.height / 2; });
+    },
+    update() {
+      if (!centers.length) return;
+      let best = -1;
+      if (!hoverDevice.matches) {   // a mouse uses the hover effect instead
+        const line = scrollY + innerHeight * 0.5;
+        if (line >= top && line <= top + h) {
+          best = 0;
+          centers.forEach((c, i) => { if (Math.abs(c - line) < Math.abs(centers[best] - line)) best = i; });
+        }
+      }
+      if (best === on) return;
+      on = best;
+      items.forEach((el, i) => el.classList.toggle('active', i === best));
+    }
+  };
+}
+const lit = [
+  litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')]),
+  litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')])
+];
+const updateLit = () => lit.forEach(l => l.update());
+addEventListener('scroll', updateLit, { passive: true });
+hoverDevice.addEventListener('change', updateLit);
+
 /* ================= hero + first project: slide-over on scroll ================= */
 const stack = document.getElementById('stack');
 const slideOn = matchMedia('(min-width: 1201px) and (prefers-reduced-motion: no-preference)');
@@ -934,6 +989,7 @@ const geo = {};
 new ResizeObserver(() => {
   geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
   geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
+  lit.forEach(l => l.measure()); updateLit();
   slideOver(); if (!hoverDevice.matches) updateProcess();
 }).observe(document.body);
 
