@@ -218,7 +218,8 @@
     .products { flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
     .hero .corners { align-content: start; }   /* extra height of the 812px screen goes to the photo, not between the buttons and the service pills */
     .hero .ctas { flex-wrap: nowrap; gap: 10px; }   /* both buttons on one line, Russian too */
-    .hero .ctas .btn { padding: .7em 1.05em; white-space: nowrap; }
+    .hero .ctas .btn { padding: .7em 1.05em; white-space: nowrap; font-size: clamp(12px, 4.1vw, 14px); }
+    .products a { white-space: nowrap; font-size: clamp(13px, 5vw, 16px); }   /* each product pill stays on one line, even "Многостраничные сайты от $500" on a very narrow screen */   /* both buttons stay inside the 16px margins on narrow phones (Russian is the widest) */
   }
   @media (max-width: 860px) and (max-height: 620px) { .hero .photo-wrap { width: 58vw; margin-top: -20vw; } .hero .corners { padding-bottom: 20px; } }   /* small phones (iPhone SE) */
 
@@ -347,7 +348,12 @@
   .term.active { scale: 1.03; background: var(--beige); border-top-color: transparent; border-radius: calc(1.2 * var(--u)); }   /* the corners are round only while lit, so the thin lines between rows stay straight */
   .term.active + .term { border-top-color: transparent; }
   .term.active .n, .term.active .big, .term.active p { color: var(--burgundy); opacity: 1; }
-  @media (hover: hover) {
+  /* phones and touch devices: the plate arrives and leaves slowly, so it looks soft and not abrupt (the whole plate, no half-faded state) */
+  @media (max-width: 760px), (hover: none) {
+    .term.reveal { transition: opacity .8s ease, transform .8s ease, scale .7s ease, background .7s ease, border-color .7s ease, border-radius .7s ease; }
+    .term .n, .term .big, .term p { transition: color .7s ease, opacity .7s ease; }
+  }
+  @media (hover: hover) and (min-width: 761px) {
     .term:hover { scale: 1.03; background: var(--beige); border-top-color: transparent; border-radius: calc(1.2 * var(--u)); }
     .term:hover + .term { border-top-color: transparent; }
     .term:hover .n, .term:hover .big, .term:hover p { color: var(--burgundy); opacity: 1; }
@@ -365,9 +371,10 @@
   .service .note { display: block; margin-top: 8px; font-size: clamp(calc(13px * var(--fk)), calc(.83 * var(--u)), 16px); line-height: 1.45; opacity: .75; }
   .service.featured { background: var(--burgundy); color: var(--beige); }
   /* a card grows a little (the text with it), colours stay as they are: a mouse triggers it with hover; on touch devices the script marks the card nearest to the middle of the screen as .active while you scroll */
-  .service.reveal { transition: opacity .8s ease, transform .8s ease, scale .35s ease; }
-  .service.active { scale: 1.04; }
-  @media (hover: hover) { .service:hover { scale: 1.03; } }
+  .service.reveal { transition: opacity .8s ease, transform .8s ease, scale .25s ease-out; }
+  .service { scale: calc(1 + .04 * var(--p, 0)); }   /* --p (0 to 1) is set by the script from how close the card is to the middle of the screen, so it grows gradually while you scroll */
+  .service.active { scale: 1.04; }   /* fallback for old browsers: on/off */
+  @media (hover: hover) and (min-width: 761px) { .service:hover { scale: 1.03; } }
   @media (max-width: 1060px) { .services { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; } .services .service, .services .service:nth-child(n+4) { grid-column: span 1; } .services .service:last-child { grid-column: 1 / -1; } }
   @media (max-width: 560px) { .services { grid-template-columns: 1fr; } }
 
@@ -399,7 +406,9 @@
   #contact .section-head h2 { white-space: normal; }
   html[lang=ru] #contact .section-head h2 { font-size: clamp(calc(34px * var(--fk)), calc(5.4 * var(--u)), 104px); }
   .contact .pitch { font-size: clamp(calc(18px * var(--fk)), calc(1.67 * var(--u)), 32px); line-height: 1.45; }
-  .links { display: flex; gap: var(--g); }
+  .links { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; gap: var(--g); }
+  .tg-btn { grid-column: 1 / -1; justify-content: center; white-space: nowrap; display: none; }   /* Telegram: Russian version only, one button as wide as WhatsApp + Instagram above it */
+  html[lang=ru] .tg-btn { display: inline-flex; }
   .link { display: flex; flex-direction: column; gap: clamp(calc(10px * var(--fk)), calc(.9 * var(--u)), 18px); width: clamp(calc(130px * var(--fk)), calc(10.4 * var(--u)), 200px); }
   .link .btn { width: 100%; justify-content: center; }
   .qr { display: block; }
@@ -436,42 +445,51 @@
     .project h3 { margin-bottom: 0; }
     .project .type { margin: -4px 0 2px; font-size: 15px; }
     .project dl { gap: 8px; }
-    .project dt, .project dd { font-size: 14px; }
+    .project dt, .project dd { font-size: 15px; }
     .project dt { margin-bottom: 0; }
     .project dd { line-height: 1.35; }
     .tags { gap: 6px; }
-    .tags span { font-size: 12px; padding: .3em .85em; }
+    .tags span { font-size: 13px; padding: .3em .85em; }
     .project .visit { font-size: 17px; padding: .8em 1.6em; }
-    /* how I work: 2 columns of compact cards, all visible at once (no spotlight dimming) */
-    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 10px; }   /* minmax(0) so a long word can never push the page wider than the screen */
-    .step { min-width: 0; }
+    /* how I work: long cards that stack like a staircase while you scroll (each one sticks lower than the one before, so every title stays visible) */
+    .steps { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 14px; }   /* minmax(0) so a long word can never push the page wider than the screen */
+    .step { min-width: 0; position: sticky; }
+    .step:nth-child(1) { top: 76px; } .step:nth-child(2) { top: 132px; } .step:nth-child(3) { top: 188px; }
+    .step:nth-child(4) { top: 244px; } .step:nth-child(5) { top: 300px; } .step:nth-child(6) { top: 356px; }   /* a step of 56px = the number and the title of the card above stay visible, like a staircase */
     #process .section-head h2 { font-size: 30px; }   /* one line in Russian too */
-    .step .card { min-height: 0; padding: 12px 13px; gap: 4px; border-radius: 18px; }
-    .steps.focus .step .card, .steps.focus .step.active .card { opacity: 1; transform: none; box-shadow: none; }
-    .step .n { font-size: 24px; }
-    .step h3 { font-size: clamp(12px, 4vw, 15px); margin: 2px 0 0; overflow-wrap: anywhere; }   /* "Предложение" fits on narrow phones too */
-    .step p { font-size: 13px; line-height: 1.4; min-height: 0; }
-    /* services: compact rows, star + name + price on one line, text under it */
+    .step .card { min-height: 0; padding: 16px 18px; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 12px; row-gap: 8px; border-radius: 18px; border: 1.5px solid color-mix(in srgb, var(--beige) 28%, var(--burgundy)); }   /* a thin light edge, so every step of the staircase reads as its own card */
+    .steps.focus .step .card, .steps.focus .step.active .card { opacity: 1; transform: none; box-shadow: 0 -10px 24px rgba(0, 0, 0, .22); }
+    .step .n { font-size: 28px; }
+    .step h3 { font-size: clamp(15px, 4.5vw, 18px); margin: 0; overflow-wrap: anywhere; }   /* a bit bigger than the 15px text */
+    .step p { grid-column: 1 / -1; font-size: 15px; line-height: 1.4; min-height: 0; }
+    /* the finished staircase leaves as one piece (the script sets --e = how far to move it up once the last card is in place); the spacer keeps the sticky cards from piling up, and Services pulls itself back up by the same amount, so the page length does not change */
+    .steps::after { content: ""; height: 626px; }
+    #services { margin-top: -640px; }
+    .step { transform: translateY(calc(-1 * var(--e, 0px))); }
+    .steps.measuring .step { position: relative; top: 0; transform: none; }
+    /* services: rows, star + name, price under the name, text under it */
     .services { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: 8px; }
-    .service { min-width: 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: baseline; column-gap: 8px; padding: 12px 16px; border-radius: 18px; }
-    .service .icon { font-size: 16px; margin: 0; }
-    .service h3 { font-size: clamp(12px, 4vw, 15px); margin: 0; text-align: left; grid-row: 1; grid-column: 2; overflow-wrap: anywhere; }
-    .service .price { font-size: 15px; white-space: nowrap; grid-row: 1; grid-column: 3; }
-    .service p { grid-row: 2; grid-column: 1 / -1; font-size: 13px; line-height: 1.4; margin: 4px 0 0; }
-    .service .note { font-size: 12px; margin-top: 2px; }
+    .service { min-width: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 8px; padding: 14px 16px; border-radius: 18px; }
+    .service .icon { font-size: 18px; margin: 0; }
+    .service h3 { font-size: clamp(15px, 4.5vw, 18px); margin: 0; text-align: left; grid-row: 1; grid-column: 2; overflow-wrap: anywhere; }   /* the title is a bit bigger than the 15px text, like the Terms titles */
+    .service .price { font-size: 16px; white-space: nowrap; grid-row: 2; grid-column: 2; justify-self: start; margin-top: 3px; }   /* price under the name, so even "Многостраничный" has the whole line */
+    .service p { grid-row: 3; grid-column: 1 / -1; font-size: 15px; line-height: 1.4; margin: 6px 0 0; }
+    .service .note { font-size: 13px; margin-top: 2px; }
     /* terms */
     .term { grid-template-columns: 46px minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 10px 0; }
     .term .n { font-size: 24px; margin: 0; }
-    .term .big { font-size: clamp(14px, 4.4vw, 17px); overflow-wrap: anywhere; }
-    .term p { font-size: 14px; line-height: 1.45; grid-column: 1 / -1; }
+    .term .big { font-size: clamp(15px, 4.5vw, 18px); overflow-wrap: anywhere; }
+    .term p { font-size: 15px; line-height: 1.45; grid-column: 1 / -1; }
     /* about */
     .about { gap: 18px; }
     .about .pic { max-width: 196px; }
     .about p { font-size: 16px; margin-bottom: 14px; }
     .chips { gap: 6px; }
-    .chips span { font-size: 13px; padding: .35em .9em; }
-    .about .speaks { font-size: 14px; margin-top: 12px; }
+    .chips span { font-size: 14px; padding: .35em .9em; }
+    .about .speaks { font-size: 15px; margin-top: 12px; }
   }
+
+
 
   @media (max-width: 760px) {   /* phones: keep air between the text and the edge of the plate */
     .term { padding: 10px 8px; margin-inline: -8px; }
@@ -666,11 +684,11 @@
   <div class="inner">
     <div class="section-head reveal"><h2 class="display" data-i18n="nav.services">Services</h2></div>
     <div class="services">
-      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s1.h">Landing page</h3><p data-i18n="s1.p">One page that presents your offer and leads visitors to contact or book</p><div class="price" data-i18n="price.300">from $300</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s1.h">Landing page</h3><p data-i18n="s1.p">A one-page website that presents your services and leads to a request or booking</p><div class="price" data-i18n="price.300">from $300</div></div>
       <div class="service featured reveal"><span class="icon">✦</span><h3 data-i18n="s2.h">Multi-page website</h3><p data-i18n="s2.p">A full website with a page for every service, in one or more languages</p><div class="price" data-i18n="price.500">from $500</div></div>
-      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s4.h">Reels editing</h3><p><span data-i18n="s4.p">Editing of your videos for Instagram: cuts, captions, music and graphics</span><span class="note" data-i18n="s4.note">Complex reels with graphics from $30 per reel</span></p><div class="price" data-i18n="price.20">from $15</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s4.h">Reels editing</h3><p><span data-i18n="s4.p">For Instagram: cuts, captions, music and graphics</span><span class="note" data-i18n="s4.note">Complex reels with graphics from $30 per reel</span></p><div class="price" data-i18n="price.20">from $15</div></div>
       <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s5.h">Ad creatives</h3><p data-i18n="s5.p">Ads and stories for Instagram that catch the eye and bring in clients</p><div class="price" data-i18n="s3.price">on request</div></div>
-      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s3.h">Presentation</h3><p data-i18n="s3.p">A presentation of your business, product or expertise in your brand style</p><div class="price" data-i18n="s3.price">on request</div></div>
+      <div class="service reveal"><span class="icon">✦</span><h3 data-i18n="s3.h">Presentation</h3><p data-i18n="s3.p">A presentation for your business, product or training in your brand style</p><div class="price" data-i18n="s3.price">on request</div></div>
     </div>
   </div>
 </section>
@@ -720,6 +738,7 @@
           <a class="btn ghost" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a class="qr" href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener noreferrer"><img src="img/qr-instagram.png" alt="Instagram QR code" width="496" height="496" loading="lazy" decoding="async"></a>
         </div>
+        <a class="btn ghost tg-btn" href="https://t.me/yevaa_s" target="_blank" rel="noopener noreferrer" data-i18n="contact.tg">Contact via Telegram</a>
       </div>
     </div>
     <div class="circle reveal"><img src="img/yeva-cover.webp" srcset="img/yeva-cover-480.webp 480w, img/yeva-cover-720.webp 720w, img/yeva-cover.webp 941w" sizes="(max-width: 860px) 48vw, 25vw" alt="Portrait of Yeva Soroka" width="941" height="1672" loading="lazy" decoding="async"></div>
@@ -776,16 +795,17 @@ const T = {
     't2.big': "2–3 rounds of revisions", 't2.h': "Revisions included", 't2.p': "All stages are approved together, and after approval you get up to three big rounds of revisions",
     't3.big': "100% prepayment", 't3.h': "Full prepayment", 't3.p': "For a long project, or if paying at once is hard, we can split the payment into two or three parts",
     't4.big': "Changes after the project", 't4.h': "Changes after the project", 't4.p': "Any changes after the project is finished are paid separately, depending on the task",
-    's1.h': 'Landing page', 's1.p': 'One page that presents your offer and leads visitors to contact or book',
+    's1.h': 'Landing page', 's1.p': 'A one-page website that presents your services and leads to a request or booking',
     's2.h': 'Multi-page website', 's2.p': 'A full website with a page for every service, in one or more languages',
     's5.h': 'Ad creatives', 's5.p': 'Ads and stories for Instagram that catch the eye and bring in clients',
-    's3.h': 'Presentation', 's3.p': 'A presentation of your business, product or expertise in your brand style', 's3.price': 'on request',
-    's4.h': 'Reels editing', 's4.p': 'Editing of your videos for Instagram: cuts, captions, music and graphics', 's4.note': "Complex reels with graphics from $30 per reel",
+    's3.h': 'Presentation', 's3.p': 'A presentation for your business, product or training in your brand style', 's3.price': 'on request',
+    's4.h': 'Reels editing', 's4.p': 'For Instagram: cuts, captions, music and graphics', 's4.note': "Complex reels with graphics from $30 per reel",
     'about.tag': "hi, I'm Yeva 👩‍💻", 'about.h': 'About me',
     'about.p': "<span class=\"para\"><span class=\"ln\">I'm a creative person</span> <span class=\"ln\">who loves beauty and aesthetics,</span> <span class=\"ln\">which is why I chose web design</span></span><span class=\"para\"><span class=\"ln\">I listen to what you need and</span> <span class=\"ln\">turn it into creative solutions,</span> <span class=\"ln\">so your brand doesn't just</span> <span class=\"ln\">look good, it sells too 🎨</span></span>",
     chip1: 'creative', chip2: 'beauty', chip3: 'aesthetics', chip4: 'attention to detail',
     'about.langs': 'I speak English, German, Russian and Ukrainian',
     'contact.h': "Let's work<br>together",
+    'contact.tg': 'Contact via Telegram',
     'contact.p': "Want a beautiful website that works for your business?<br>Write to me, and I'll create a design that's made just for you",
     footer: '© 2026 Yeva Soroka · Web designer',
     'foot.imprint': 'Imprint', 'foot.privacy': 'Privacy policy'
@@ -823,16 +843,17 @@ const T = {
     't2.big': "2–3 круга правок", 't2.h': "Правки включены", 't2.p': "Все этапы мы согласовываем вместе, и после согласования доступно до трёх больших кругов правок",
     't3.big': "100% предоплата", 't3.h': "Полная предоплата", 't3.p': "Если проект долгий или оплатить сразу нет возможности, платёж можно разбить на два-три раза",
     't4.big': "Правки после проекта", 't4.h': "Правки после проекта", 't4.p': "Любые правки после завершения проекта оплачиваются отдельно, в зависимости от задачи",
-    's1.h': 'Лендинг', 's1.p': 'Одна страница, которая рассказывает о вашем предложении и подводит посетителя к заявке или записи',
+    's1.h': 'Лендинг', 's1.p': 'Одностраничный сайт, который презентует ваши услуги и подводит к заявке или записи',
     's2.h': 'Многостраничный сайт', 's2.p': 'Полноценный сайт с отдельной страницей для каждой услуги, на одном или нескольких языках',
     's5.h': 'Рекламные креативы', 's5.p': 'Реклама и сторис для Instagram, которые привлекают внимание и приводят клиентов',
-    's3.h': 'Презентация', 's3.p': 'Презентация вашего бизнеса, продукта или экспертизы в фирменном стиле', 's3.price': 'по запросу',
-    's4.h': 'Монтаж Reels', 's4.p': 'Монтаж ваших видео для Instagram: нарезка, субтитры, музыка и графика', 's4.note': "Сложные ролики с графикой — от $30 за ролик",
+    's3.h': 'Презентация', 's3.p': 'Презентация для вашего бизнеса, продукта или обучения в фирменном стиле', 's3.price': 'по запросу',
+    's4.h': 'Монтаж Reels', 's4.p': 'Для Instagram: нарезка, субтитры, музыка и графика', 's4.note': "Сложные ролики с графикой — от $30 за ролик",
     'about.tag': 'привет, я Ева 👩‍💻', 'about.h': 'Обо мне',
     'about.p': "<span class=\"para\"><span class=\"ln\">Я творческий человек и</span> <span class=\"ln\">люблю красоту и эстетику —</span> <span class=\"ln\">поэтому и выбрала веб-дизайн</span></span><span class=\"para\"><span class=\"ln\">Я внимательно слушаю, что вам</span> <span class=\"ln\">нужно, и нахожу креативные</span> <span class=\"ln\">решения, чтобы ваш бренд</span> <span class=\"ln\">выглядел не только хорошо,</span> <span class=\"ln\">но и продающе 🎨</span></span>",
     chip1: 'креативность', chip2: 'красота', chip3: 'эстетика', chip4: 'внимание к деталям',
     'about.langs': 'Говорю на английском, немецком, русском и украинском',
     'contact.h': 'Давайте<br>работать вместе',
+    'contact.tg': 'Связаться в Telegram',
     'contact.p': "Хотите красивый сайт, который работает на ваш бизнес?<br>Напишите мне — создам дизайн именно для вас",
     footer: '© 2026 Ева Сорока · Веб-дизайнер',
     'foot.imprint': 'Выходные данные', 'foot.privacy': 'Политика конфиденциальности'
@@ -929,8 +950,10 @@ addEventListener('scroll', updateProcess, { passive: true });
 addEventListener('resize', updateProcess);
 
 /* ================= terms and services: on touch devices the row/card nearest the middle of the screen is lit (.active) while you scroll ================= */
-function litOnScroll(sec, items) {
+function litOnScroll(sec, items, gradual) {   // gradual = the effect grows with the scroll (Services); otherwise the nearest item is simply lit (Terms)
   let top = 0, h = 0, centers = [], on = -2;
+  const ps = items.map(() => 0);
+  const smooth = gradual && CSS.supports('color', 'color-mix(in srgb, red calc(50% * 1), blue)');   // gradual version; old browsers get the on/off version
   return {
     measure() {   // positions are cached, so scrolling never forces a layout
       top = sec.getBoundingClientRect().top + scrollY; h = sec.offsetHeight;
@@ -938,13 +961,29 @@ function litOnScroll(sec, items) {
     },
     update() {
       if (!centers.length) return;
+      if (hoverDevice.matches && !matchMedia('(max-width: 760px)').matches) {   // a mouse on a wide screen uses the hover effect instead
+        if (on !== -3) { on = -3; ps.fill(0); items.forEach(el => { el.style.removeProperty('--p'); el.style.removeProperty('--q'); el.classList.remove('active'); }); }
+        return;
+      }
+      const line = scrollY + innerHeight * 0.5;   // phone layout or touch device: follow the scroll
+      if (smooth) {
+        const reach = innerHeight * 0.16;   // how far from the middle of the screen a row still reacts (a bit less than the distance between two rows, so one row leads at a time)
+        items.forEach((el, i) => {
+          let p = Math.max(0, 1 - Math.abs(centers[i] - line) / reach);
+          p = p * p * (3 - 2 * p);   // ease in and out
+          if (Math.abs(p - ps[i]) > 0.004) {
+            ps[i] = p; el.style.setProperty('--p', p.toFixed(3));
+            const q = Math.min(1, Math.max(0, (p - 0.5) / 0.25));   // the text colour follows later than the size and the plate
+            el.style.setProperty('--q', q.toFixed(3));
+          }
+        });
+        on = -4;
+        return;
+      }
       let best = -1;
-      if (!hoverDevice.matches) {   // a mouse uses the hover effect instead
-        const line = scrollY + innerHeight * 0.5;
-        if (line >= top && line <= top + h) {
-          best = 0;
-          centers.forEach((c, i) => { if (Math.abs(c - line) < Math.abs(centers[best] - line)) best = i; });
-        }
+      if (line >= top && line <= top + h) {
+        best = 0;
+        centers.forEach((c, i) => { if (Math.abs(c - line) < Math.abs(centers[best] - line)) best = i; });
       }
       if (best === on) return;
       on = best;
@@ -953,12 +992,36 @@ function litOnScroll(sec, items) {
   };
 }
 const lit = [
-  litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')]),
-  litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')])
+  litOnScroll(document.getElementById('terms'), [...document.querySelectorAll('#terms .term')], false),
+  litOnScroll(document.getElementById('services'), [...document.querySelectorAll('#services .service')], true)
 ];
 const updateLit = () => lit.forEach(l => l.update());
 addEventListener('scroll', updateLit, { passive: true });
 hoverDevice.addEventListener('change', updateLit);
+
+/* ================= how I work (phones): the finished staircase scrolls away as one piece ================= */
+const stairsEl = document.querySelector('#process .steps');
+const stairCards = [...stairsEl.querySelectorAll('.step')];
+const phoneMq = matchMedia('(max-width: 760px)');
+let stairDone = 0;   // page scroll position at which the last card has reached its place
+function measureStairs() {
+  stairDone = 0;
+  if (!phoneMq.matches) return;
+  stairsEl.classList.add('measuring');   // natural positions, without the sticky offsets
+  const last = stairCards[stairCards.length - 1];
+  const natural = last.getBoundingClientRect().top + scrollY;
+  stairsEl.classList.remove('measuring');
+  stairDone = natural - parseFloat(getComputedStyle(last).top);
+}
+let stairE = -1;
+function updateStairs() {
+  const e = phoneMq.matches && stairDone ? Math.max(0, scrollY - stairDone) : 0;
+  if (e === stairE) return;
+  stairE = e;
+  stairsEl.style.setProperty('--e', e + 'px');
+}
+addEventListener('scroll', updateStairs, { passive: true });
+phoneMq.addEventListener('change', () => { measureStairs(); updateStairs(); });
 
 /* ================= hero + first project: slide-over on scroll ================= */
 const stack = document.getElementById('stack');
@@ -990,6 +1053,7 @@ new ResizeObserver(() => {
   geo.procTop = proc.getBoundingClientRect().top + scrollY; geo.procH = proc.offsetHeight;
   geo.stackTop = stack.offsetTop; geo.stackH = stack.offsetHeight;
   lit.forEach(l => l.measure()); updateLit();
+  measureStairs(); updateStairs();
   slideOver(); if (!hoverDevice.matches) updateProcess();
 }).observe(document.body);
 
