@@ -496,9 +496,29 @@
     .term.active, .term:hover { border-radius: 16px; }
   }
 
-  footer { background: var(--ink); color: color-mix(in srgb, var(--beige) 60%, transparent); text-align: center; font-size: 14px; padding: var(--m); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; }
-  footer a { text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
-  footer a:hover { color: var(--beige); }
+  /* footer: logo and a short line, the menu, the contact details (with the e-mail), then the legal links */
+  footer { background: var(--ink); color: var(--beige); padding: clamp(44px, 5vw, 84px) var(--m) 24px; }
+  .foot-top { display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 32px clamp(32px, 5vw, 96px); padding-bottom: clamp(32px, 3.5vw, 60px); border-bottom: 1px solid color-mix(in srgb, var(--beige) 22%, transparent); }
+  /* the logo fills the whole width of the footer (container query units; the vw line is the fallback). 0.138 = a little under 100 / the width of "Yeva Soroka" at 100px in Unbounded 800 (measured). Keep it if the font or the letter spacing changes. */
+  .foot-logo { container-type: inline-size; padding-bottom: clamp(32px, 4vw, 72px); }
+  .foot-logo .logo { display: flex; flex-direction: column; align-items: center; text-decoration: none; font-family: var(--f-display); font-weight: var(--w-display); letter-spacing: -.06em; line-height: .95; white-space: nowrap; font-size: calc((100vw - 2 * var(--m)) * .138); font-size: calc(100cqw * .138); }
+  @media (min-width: 761px) { .foot-logo .logo { font-size: calc((100vw - 2 * var(--m)) * .138 * .7); font-size: calc(100cqw * .138 * .7); } }   /* on a computer the logo is about 70% of the width, on a phone it fills the whole width */
+  .foot-logo .logo small { font-family: var(--f-body); font-weight: 600; font-size: .6em; letter-spacing: .25em; text-transform: uppercase; opacity: .85; margin-top: .06em; padding-left: .25em; }
+  .foot-col h4 { font-family: var(--f-display); font-weight: 600; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; opacity: .55; margin-bottom: 16px; }
+  .foot-col ul { list-style: none; display: grid; gap: 10px; }
+  .foot-col a { text-decoration: none; font-size: clamp(16px, 1.15vw, 21px); font-weight: 600; opacity: .88; transition: opacity .2s, color .2s; }
+  .foot-col a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .tg-only { display: none; }   /* Telegram: Russian version only */
+  html[lang=ru] .tg-only { display: list-item; }
+  .foot-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 28px; padding-top: 22px; font-size: 14px; color: color-mix(in srgb, var(--beige) 60%, transparent); }
+  .foot-legal { display: flex; flex-wrap: wrap; gap: 6px 24px; }
+  .foot-bottom a { text-decoration: underline; text-underline-offset: 3px; transition: color .2s; }
+  .foot-bottom a:hover { color: var(--beige); }
+  @media (max-width: 760px) {
+    footer { padding-top: 44px; }
+    .foot-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); justify-content: stretch; column-gap: 20px; }
+    .foot-bottom { flex-direction: column; }
+  }
 
   /* ---------- hero + first project: the project slides up over the hero while scrolling ----------
      .stack is 200 screens tall, .pin stays stuck to the top, the project moves up (translateY 100% to 0)
@@ -748,9 +768,35 @@
 </main>
 
 <footer>
-  <span data-i18n="footer">© 2026 Yeva Soroka · Web designer</span>
-  <a href="imprint.html" data-i18n="foot.imprint">Imprint</a>
-  <a href="privacy.html" data-i18n="foot.privacy">Privacy policy</a>
+  <div class="foot-logo"><a class="logo" href="#top"><span>Yeva Soroka</span><small>web design</small></a></div>
+  <div class="foot-top">
+    <nav class="foot-col" aria-label="Menu">
+      <h4 data-i18n="foot.menu">Menu</h4>
+      <ul>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#process" data-i18n="nav.process">How I work</a></li>
+        <li><a href="#services" data-i18n="nav.services">Services</a></li>
+        <li><a href="#terms" data-i18n="nav.terms">Terms</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+      </ul>
+    </nav>
+    <div class="foot-col">
+      <h4 data-i18n="foot.contact">Contact</h4>
+      <ul>
+        <li><a href="mailto:1evasoroka1@gmail.com">Email</a></li>
+        <li><a href="https://wa.me/41763099553" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        <li><a href="https://www.instagram.com/soroka.webdesign" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li class="tg-only"><a href="https://t.me/yevaa_s" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span data-i18n="footer">© 2026 Yeva Soroka · Web designer</span>
+    <span class="foot-legal">
+      <a href="imprint.html" data-i18n="foot.imprint">Imprint</a>
+      <a href="privacy.html" data-i18n="foot.privacy">Privacy policy</a>
+    </span>
+  </div>
 </footer>
 
 
@@ -808,6 +854,7 @@ const T = {
     'contact.tg': 'Contact via Telegram',
     'contact.p': "Want a beautiful website that works for your business?<br>Write to me, and I'll create a design that's made just for you",
     footer: '© 2026 Yeva Soroka · Web designer',
+    'foot.menu': 'Menu', 'foot.contact': 'Contact',
     'foot.imprint': 'Imprint', 'foot.privacy': 'Privacy policy'
   },
   ru: {
@@ -856,6 +903,7 @@ const T = {
     'contact.tg': 'Связаться в Telegram',
     'contact.p': "Хотите красивый сайт, который работает на ваш бизнес?<br>Напишите мне — создам дизайн именно для вас",
     footer: '© 2026 Ева Сорока · Веб-дизайнер',
+    'foot.menu': 'Меню', 'foot.contact': 'Контакты',
     'foot.imprint': 'Выходные данные', 'foot.privacy': 'Политика конфиденциальности'
   }
 };
